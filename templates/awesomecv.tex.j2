@@ -7,7 +7,7 @@
 %-------------------------------------------------------------------------------
 %                Required Packages
 %-------------------------------------------------------------------------------
-\RequirePackage{array, enumitem, ragged2e, geometry, fontspec, unicode-math, xcolor, hyperref, parskip}
+\RequirePackage{array, enumitem, ragged2e, geometry, fontspec, unicode-math, xcolor, hyperref, parskip, graphicx}
 
 %-------------------------------------------------------------------------------
 %                Font Configuration - Compact and elegant
@@ -21,6 +21,20 @@
 \renewcommand*{\headerfont}{\roboto}
 \renewcommand*{\bodyfont}{\sourcesanspro}
 \renewcommand*{\bodyfontlight}{\sourcesansprolight}
+
+%-------------------------------------------------------------------------------
+%                Logo Command
+%-------------------------------------------------------------------------------
+% Raw block to avoid Jinja2 parsing of LaTeX commands
+{% raw %}
+\newcommand{\companylogo}[1]{%
+  \raisebox{-0.1em}{\includegraphics[height=0.8em]{logos/#1}}%
+}
+
+\newcommand{\logoads}{\companylogo{ads.png}}
+\newcommand{\logocontinental}{\companylogo{continental.png}}
+\newcommand{\logoenseeiht}{\companylogo{enseeiht.png}}
+{% endraw %}
 
 %-------------------------------------------------------------------------------
 %                Elegant Blue/Black/Purple Theme - Refined
@@ -139,7 +153,13 @@
 {%- for job in work %}
 \cventry
 { {\color{textdark}\small {{ job.position | bold }}} }
-{ {\color{elegantblack}\small {{ job.company | bold }}} }
+{ {\color{elegantblack}\small {% if job.company == "Neverhack (mission Airbus Defence and Space)" -%}
+{{ job.company | bold }}~\logoads
+{%- elif job.company == "Continental" -%}
+{{ job.company | bold }}~\logocontinental
+{%- else -%}
+{{ job.company | bold }}
+{%- endif %}} }
 { {\color{textlight}\footnotesize {{ job.location | bold }}} }
 { {\color{textlight}\footnotesize {{ job.startDate | replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }}} }
 {
@@ -185,7 +205,11 @@
 {%- for edu in education %}
 \cventry
 { {\color{textdark}\small {{ edu.studyType | bold }}} }
-{ {\color{elegantblack}\small {{ edu.institution | bold }}} }
+{ {\color{elegantblack}\small {% if edu.institution == "INP ENSEEIHT" -%}
+{{ edu.institution | bold }}~\logoenseeiht
+{%- else -%}
+{{ edu.institution | bold }}
+{%- endif %}} }
 { {\color{textlight}\footnotesize {{ edu.location | bold }}} }
 { {\color{textlight}\footnotesize {{ edu.startDate | replace('-', '/') }} -- {{ edu.endDate | replace('-', '/') }}} }
 {

@@ -202,6 +202,14 @@ class ResumeBuilder:
         awesome_cv_cls = self.config.template_dir / "awesome-cv.cls"
         if awesome_cv_cls.exists():
             shutil.copy2(awesome_cv_cls, self.config.output_dir / "awesome-cv.cls")
+        
+        # Copy logos directory if it exists
+        logos_dir = Path("logos")
+        if logos_dir.exists():
+            build_logos_dir = self.config.output_dir / "logos"
+            if build_logos_dir.exists():
+                shutil.rmtree(build_logos_dir)
+            shutil.copytree(logos_dir, build_logos_dir)
     
     def render_template(self, template_name: str, **extra_context) -> str:
         """Render template with resume data.
