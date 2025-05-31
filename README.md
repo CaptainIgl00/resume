@@ -2,6 +2,9 @@
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![ATS Validation](https://github.com/matheoguilloux/resume/actions/workflows/ats-validation.yml/badge.svg)](https://github.com/matheoguilloux/resume/actions/workflows/ats-validation.yml)
+[![Tests](https://github.com/matheoguilloux/resume/actions/workflows/test.yml/badge.svg)](https://github.com/matheoguilloux/resume/actions/workflows/test.yml)
+[![Release](https://github.com/matheoguilloux/resume/actions/workflows/release.yml/badge.svg)](https://github.com/matheoguilloux/resume/actions/workflows/release.yml)
 
 Generate professional, ATS-friendly resumes from YAML data with automated validation using modern Python tooling.
 
@@ -25,6 +28,30 @@ make validate
 - 🤖 **ATS Validation**: Automated testing to ensure your resume is ATS-compatible
 - 🧪 **Comprehensive Testing**: Unit, integration, and ATS compatibility tests
 - 📦 **Easy Installation**: Modern `pyproject.toml` with optional dependencies
+- 🚀 **CI/CD Integration**: Automated validation and release workflows
+
+## 🔄 CI/CD Workflows
+
+### 🤖 Automatic ATS Validation
+Every push to `main` triggers:
+- ✅ CV build and validation
+- ✅ ATS compatibility testing
+- ✅ Comprehensive test suite
+- ✅ Artifact upload (PDF + reports)
+
+### 🚀 Automated Releases
+Create a tag to trigger automatic release:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+**Generated files in release:**
+- `Mathéo_Guilloux_CV_v1.0.0.pdf`
+- `resume_v1.0.0.html`
+- `resume_v1.0.0.json`
+- `ats-report_v1.0.0.json`
+- `resume_complete_v1.0.0.zip`
 
 ## 📋 Usage
 
@@ -80,6 +107,10 @@ resume-ats/
 ├── templates/               # Jinja2 templates
 │   ├── awesomecv.tex.j2    # LaTeX template
 │   └── simple.html.j2      # HTML template
+├── .github/workflows/       # CI/CD workflows
+│   ├── ats-validation.yml  # ATS validation on main
+│   ├── release.yml         # Automated releases
+│   └── test.yml            # Multi-platform testing
 ├── build/                   # Generated files
 ├── resume.yml              # Your resume data
 ├── pyproject.toml          # Modern Python config
@@ -243,4 +274,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**Key Improvement**: This is now a proper Python package with modern tooling, type safety, comprehensive testing, and a beautiful CLI interface while maintaining all original functionality. 
+**Key Improvement**: This is now a proper Python package with modern tooling, type safety, comprehensive testing, a beautiful CLI interface, and full CI/CD automation while maintaining all original functionality. 
