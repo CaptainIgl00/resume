@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -26,7 +27,24 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 ROOT = Path(__file__).resolve().parent
 TEMPLATES = ROOT / "templates"
 BUILD_DIR = ROOT / "build"
-BUILD_DIR.mkdir(exist_ok=True)
+
+
+def clean_build_dir():
+    """Clean the build directory completely for a fresh start."""
+    if BUILD_DIR.exists():
+        print("[+] Cleaning build directory...")
+        shutil.rmtree(BUILD_DIR)
+    BUILD_DIR.mkdir(exist_ok=True)
+    print("[✓] Build directory cleaned")
+
+
+def copy_required_assets():
+    """Copy required assets like awesome-cv.cls to build directory."""
+    # Copy awesome-cv.cls if it exists in templates
+    awesome_cv_cls = TEMPLATES / "awesome-cv.cls"
+    if awesome_cv_cls.exists():
+        shutil.copy2(awesome_cv_cls, BUILD_DIR / "awesome-cv.cls")
+        print("[✓] Copied awesome-cv.cls to build directory")
 
 
 def load_data(yaml_path: Path = ROOT / "resume.yml") -> dict:
@@ -54,64 +72,60 @@ def build_pdf(data: dict) -> Path:
     tex_path = BUILD_DIR / "resume.tex"
     tex_path.write_text(tex_source, encoding="utf-8")
 
-    # Clean any previous artifacts
-    for pattern in ["*.aux", "*.fls", "*.fdb_latexmk", "*.log", "*.xdv"]:
-        for file in BUILD_DIR.glob(pattern):
-            try:
-                file.unlink()
-            except FileNotFoundError:
-                pass
-
-    print("[+] Compiling PDF…")
+    print("[+] Compiling PDF with XeLaTeX...")
     
-    # First try with latexmk
+    # Use XeLaTeX directly for better control and cleaner output
     try:
-        subprocess.run([
-            "latexmk",
-            "-quiet",
-            "-xelatex",
+        # Run XeLaTeX to generate XDV
+        result = subprocess.run([
+            "xelatex",
             "-interaction=nonstopmode",
+            "-no-pdf",
+            "-halt-on-error",
             tex_path.name,
-        ], cwd=BUILD_DIR, check=True)
-        pdf_exists = (BUILD_DIR / "resume.pdf").exists()
-    except (FileNotFoundError, subprocess.CalledProcessError):
-        # Fallback to direct XeLaTeX + xdvipdfmx
-        print("[+] Falling back to XeLaTeX + xdvipdfmx…")
-        try:
-            # Run XeLaTeX to generate XDV
-            result = subprocess.run([
-                "xelatex",
-                "-interaction=nonstopmode",
-                "-no-pdf",
-                tex_path.name,
-            ], cwd=BUILD_DIR, capture_output=True, text=True)
+        ], cwd=BUILD_DIR, capture_output=True, text=True)
+        
+        # Check if XDV was created
+        xdv_path = BUILD_DIR / "resume.xdv"
+        if not xdv_path.exists() or result.returncode != 0:
+            print(f"[!] XeLaTeX compilation failed.")
+            print(f"[!] Exit code: {result.returncode}")
+            if result.stderr.strip():
+                print(f"[!] Error output:\n{result.stderr}")
+            # Show relevant lines from log if available
+            log_path = BUILD_DIR / "resume.log"
+            if log_path.exists():
+                print(f"[!] Check {log_path} for detailed error information")
+            raise subprocess.CalledProcessError(result.returncode, "xelatex")
+        
+        # Convert XDV to PDF
+        print("[+] Converting XDV to PDF...")
+        result = subprocess.run([
+            "xdvipdfmx",
+            "-q",  # Quiet mode
+            "resume.xdv"
+        ], cwd=BUILD_DIR, capture_output=True, text=True)
+        
+        if result.returncode != 0:
+            print(f"[!] xdvipdfmx conversion failed.")
+            print(f"[!] Exit code: {result.returncode}")
+            if result.stderr.strip():
+                print(f"[!] Error output:\n{result.stderr}")
+            raise subprocess.CalledProcessError(result.returncode, "xdvipdfmx")
+        
+        pdf_path = BUILD_DIR / "resume.pdf"
+        if not pdf_path.exists():
+            raise RuntimeError("PDF conversion completed but no PDF file was generated")
             
-            # Check if XDV was created
-            xdv_path = BUILD_DIR / "resume.xdv"
-            if not xdv_path.exists():
-                print(f"[!] XeLaTeX failed. Output:\n{result.stdout}\n{result.stderr}")
-                raise subprocess.CalledProcessError(result.returncode, "xelatex")
-            
-            # Convert XDV to PDF
-            subprocess.run([
-                "xdvipdfmx",
-                "resume.xdv"
-            ], cwd=BUILD_DIR, check=True)
-            
-            pdf_exists = (BUILD_DIR / "resume.pdf").exists()
-            
-        except (FileNotFoundError, subprocess.CalledProcessError) as e:
-            print(f"[!] PDF compilation failed: {e}")
-            print("[!] Make sure XeLaTeX and xdvipdfmx are installed")
-            raise
-
-    if not pdf_exists:
-        raise RuntimeError("PDF compilation completed but no PDF file was generated")
+    except FileNotFoundError as e:
+        print(f"[!] Required tool not found: {e}")
+        print("[!] Make sure XeLaTeX and xdvipdfmx are installed:")
+        print("    sudo apt install texlive-xetex texlive-latex-extra texlive-fonts-extra")
+        raise
 
     # Rename with candidate name for convenience
-    pdf_path = BUILD_DIR / "resume.pdf"
     target = BUILD_DIR / f"{data['basics']['name'].replace(' ', '_')}_CV.pdf"
-    target.write_bytes(pdf_path.read_bytes())
+    shutil.copy2(pdf_path, target)
     print(f"[✓] PDF written to {target.relative_to(ROOT)}")
     return target
 
@@ -142,26 +156,40 @@ def main() -> None:
         default="all",
         help="What to build (default: all)",
     )
+    parser.add_argument(
+        "--no-clean",
+        action="store_true",
+        help="Skip cleaning the build directory (for debugging)",
+    )
     args = parser.parse_args()
 
-    data = load_data()
+    # Clean build directory unless --no-clean is specified
+    if not args.no_clean:
+        clean_build_dir()
+        copy_required_assets()
 
-    if args.target in ("pdf", "all"):
-        build_pdf(data)
+    try:
+        data = load_data()
+    except Exception as e:
+        print(f"[!] Failed to load resume data: {e}", file=sys.stderr)
+        sys.exit(1)
 
-    if args.target in ("html", "all"):
-        build_html(data)
+    try:
+        if args.target in ("pdf", "all"):
+            build_pdf(data)
 
-    if args.target in ("txt", "all"):
-        build_txt(data)
+        if args.target in ("html", "all"):
+            build_html(data)
+
+        if args.target in ("txt", "all"):
+            build_txt(data)
+            
+        print("\n[🎉] Build completed successfully!")
+        
+    except Exception as e:
+        print(f"\n[!] Build failed: {e}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except subprocess.CalledProcessError as exc:
-        print("[!] Build failed:", exc, file=sys.stderr)
-        sys.exit(1)
-    except Exception as exc:
-        print(f"[!] Unexpected error: {exc}", file=sys.stderr)
-        sys.exit(1)
+    main()

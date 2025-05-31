@@ -21,7 +21,7 @@
 \name{ {{ basics.name.split(' ')[0] }} }{ {{ ' '.join(basics.name.split(' ')[1:]) }} }
 \position{ {{ basics.label }} }
 \email{ {{ basics.email }} }
-\location{ {{ basics.location.city }}, {{ basics.location.countryCode }} }
+\address{ {{ basics.location.city }}, {{ basics.location.countryCode }} }
 
 % Add other fields if present
 {% for p in basics.profiles or [] %}
@@ -39,7 +39,7 @@
 % EXPERIENCE -----------------------------------------------------------------
 \cvsection{Experience}
 {% for job in work %}
-\cvevent
+\cventry
   { {{ job.position }} }
   { {{ job.company }} }
   { {{ job.location }} }
@@ -67,7 +67,7 @@
 % EDUCATION ------------------------------------------------------------------
 \cvsection{Education}
 {% for edu in education %}
-\cvevent
+\cventry
   { {{ edu.studyType }} }
   { {{ edu.institution }} }
   { {{ edu.location }} }
