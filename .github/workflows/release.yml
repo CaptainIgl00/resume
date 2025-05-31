@@ -28,7 +28,8 @@ jobs:
         sudo apt-get install -y \
           texlive-xetex \
           texlive-latex-extra \
-          texlive-fonts-recommended
+          texlive-fonts-recommended \
+          texlive-fonts-extra
           
     - name: 📦 Install dependencies
       run: |
