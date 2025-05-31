@@ -144,8 +144,15 @@ class TestATSCompatibility:
                 # String skill
                 all_yaml_skills.append(skill)
         
+        # Clean YAML skills: remove ** formatting and (annotations)
+        yaml_skills_clean = []
+        for skill in all_yaml_skills:
+            # Remove ** markdown formatting and split on ( to remove annotations
+            clean_skill = skill.replace('**', '').split('(')[0].strip().lower()
+            yaml_skills_clean.append(clean_skill)
+        
         # Check for significant overlap
-        yaml_skills_lower = {skill.lower() for skill in all_yaml_skills}
+        yaml_skills_lower = set(yaml_skills_clean)
         extracted_skills_lower = {skill.lower() for skill in extracted_data.skills}
         
         overlap = yaml_skills_lower & extracted_skills_lower

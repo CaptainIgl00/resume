@@ -3,6 +3,7 @@
 import json
 import shutil
 import subprocess
+import re
 from pathlib import Path
 from typing import Dict, Any, Optional
 
@@ -13,6 +14,33 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from .models import ResumeData, BuildConfig
 from .exceptions import BuildError, TemplateError, CompilationError
+
+
+def process_bold_markdown(text: str) -> str:
+    """Convert **text** markdown to LaTeX bold format and escape special chars.
+    
+    Args:
+        text: Input text with **bold** markdown
+        
+    Returns:
+        Text with LaTeX bold formatting and escaped special characters
+    """
+    if not isinstance(text, str):
+        return text
+    
+    # First, escape special LaTeX characters
+    text = text.replace('~', '\\textasciitilde{}')
+    text = text.replace('&', '\\&')
+    text = text.replace('%', '\\%')
+    text = text.replace('$', '\\$')
+    text = text.replace('#', '\\#')
+    text = text.replace('^', '\\textasciicircum{}')
+    text = text.replace('_', '\\_')
+    text = text.replace('{', '\\{')
+    text = text.replace('}', '\\}')
+    
+    # Then convert **text** to \textbf{text}
+    return re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', text)
 
 
 class ResumeBuilder:
@@ -29,13 +57,16 @@ class ResumeBuilder:
         self._setup_jinja_env()
     
     def _setup_jinja_env(self) -> None:
-        """Setup Jinja2 environment."""
+        """Setup Jinja2 environment with custom filters."""
         self.jinja_env = Environment(
             loader=FileSystemLoader(str(self.config.template_dir)),
             autoescape=select_autoescape(["html", "xml"]),
             trim_blocks=True,
             lstrip_blocks=True,
         )
+        
+        # Add custom filter for bold markdown processing
+        self.jinja_env.filters['bold'] = process_bold_markdown
     
     @classmethod
     def from_yaml(cls, yaml_path: Path, config: Optional[BuildConfig] = None) -> 'ResumeBuilder':

@@ -1,112 +1,223 @@
-% awesomecv.tex.j2 – Jinja2 template for Awesome‑CV
-% Compile with xelatex or latexmk (see build.py)
+% awesomecv.tex.j2 – Elegant Single-Page ATS-Optimized Template
+% Compile with xelatex or latexmk
+% Optimized for Applicant Tracking Systems (ATS) with elegant single-page design
 
 \documentclass[11pt,a4paper,oneside]{awesome-cv}
 
-% --- Custom tweaks for better readability -------------
-\setmainfont{Roboto}           % Roboto is embedded → safe and clean
-\geometry{left=2cm,right=1.8cm,top=1.8cm,bottom=1.8cm}
+%-------------------------------------------------------------------------------
+%                Required Packages
+%-------------------------------------------------------------------------------
+\RequirePackage{array, enumitem, ragged2e, geometry, fontspec, unicode-math, xcolor, hyperref, parskip}
 
-% Better spacing
-\renewcommand{\acvSectionTopSkip}{5mm}
-\setlength{\itemsep}{0.4em}
+%-------------------------------------------------------------------------------
+%                Font Configuration - Compact and elegant
+%-------------------------------------------------------------------------------
+% Roboto for headers and titles
+\RequirePackage{roboto}
+% Source Sans Pro for body text  
+\RequirePackage[default,opentype]{sourcesanspro}
 
-% Cleaner header separators
+% Set font families
+\renewcommand*{\headerfont}{\roboto}
+\renewcommand*{\bodyfont}{\sourcesanspro}
+\renewcommand*{\bodyfontlight}{\sourcesansprolight}
+
+%-------------------------------------------------------------------------------
+%                Elegant Blue/Black/Purple Theme - Refined
+%-------------------------------------------------------------------------------
+\definecolor{deepblue}{HTML}{1A237E}        % Deep blue primary
+\definecolor{elegantblack}{HTML}{2C2C2C}    % Elegant black
+\definecolor{modernpurple}{HTML}{673AB7}    % Modern purple
+\definecolor{lightpurple}{HTML}{9C27B0}     % Light purple accent
+\definecolor{textdark}{HTML}{263238}        % Dark text
+\definecolor{textlight}{HTML}{757575}       % Light text
+
+% Set awesome-cv colors
+\colorlet{awesome}{deepblue}
+
+%-------------------------------------------------------------------------------
+%                Compact Page Layout
+%-------------------------------------------------------------------------------
+\geometry{left=1.2cm, right=1.2cm, top=1cm, bottom=1cm, footskip=0.3cm}
+
+% Compact spacing adjustments
+\renewcommand{\acvSectionTopSkip}{1.5mm}
+\renewcommand{\acvSectionContentTopSkip}{1mm}
+\setlength{\parskip}{0.05em}
+\setlength{\itemsep}{0.08em}
+
+% Header separator
 \renewcommand{\acvHeaderSocialSep}{\enspace|\enspace}
 
-%----------  CONFIG  ----------------------------------------------------------
-\definecolor{awesome}{HTML}{007ACC}  % primary colour
+%-------------------------------------------------------------------------------
+%                Personal Information
+%-------------------------------------------------------------------------------
+\name{ {{- basics.name.split(' ')[0] -}} }{ {{- ' '.join(basics.name.split(' ')[1:]) -}} }
+\position{ {{- basics.label | bold -}} }
+\address{ {{- basics.location.city -}}, {{- basics.location.countryCode -}} }
+\email{ {{- basics.email -}} }
 
-%----------  PERSONAL DATA  ---------------------------------------------------
-\name{ {{ basics.name.split(' ')[0] }} }{ {{ ' '.join(basics.name.split(' ')[1:]) }} }
-\position{ {{ basics.label }} }
-\email{ {{ basics.email }} }
-\address{ {{ basics.location.city }}, {{ basics.location.countryCode }} }
+{% for p in basics.profiles or [] -%}
+{%- if p.network == "GitHub" -%}
+\github{ {{- p.username -}} }
+{%- elif p.network == "LinkedIn" -%}
+\linkedin{ {{- p.username -}} }
+{%- endif -%}
+{%- endfor %}
 
-% Add other fields if present
-{% for p in basics.profiles or [] %}
-\github{ {{ p.username }} }
-{% endfor %}
-
-%-----------------------------------------------------------------------------
+%-------------------------------------------------------------------------------
 \begin{document}
-\makecvheader[L]  % L = left aligned for better readability
 
-% SUMMARY --------------------------------------------------------------------
-\cvsection{Summary}
-\small{ {{ basics.summary }} }\\
+% Compact elegant header
+\makecvheader[C]
 
-% EXPERIENCE -----------------------------------------------------------------
-\cvsection{Experience}
-{% for job in work %}
+% Professional Summary - compact and elegant
+\vspace{1mm}
+{\color{deepblue}\rule{\linewidth}{2pt}}
+{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Summary}
+\vspace{1mm}
+
+{\color{textdark}{{ basics.summary | bold | replace('\n', ' ') | trim }}}
+
+\vspace{2mm}
+
+% Two-column layout - optimized spacing
+\noindent%
+\begin{minipage}[t]{0.28\textwidth}
+% LEFT SIDEBAR - compact and elegant
+
+{\color{modernpurple}\rule{\linewidth}{1.5pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Contact}
+\vspace{1mm}
+
+\faEnvelope\ \href{mailto:{{ basics.email }}}{\color{deepblue}\small {{ basics.email }}} 
+
+{%- for p in basics.profiles or [] %}
+{%- if p.network == "GitHub" %}
+
+\faGithub\ \href{https://github.com/{{ p.username }}}{\color{deepblue}\small {{ p.username }}} 
+{%- elif p.network == "LinkedIn" %}  
+
+\faLinkedin\ \href{https://linkedin.com/in/{{ p.username }}}{\color{deepblue}\small {{ p.username }}} 
+{%- endif %}
+{%- endfor %}
+
+\vspace{2mm}
+{\color{modernpurple}\rule{\linewidth}{1.5pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Compétences}
+\vspace{1mm}
+
+\begin{itemize}[leftmargin=0.8em, nosep, itemsep=0.8mm]
+{%- for skill in skills %}
+\item {\color{elegantblack}\textbf{\small {{ skill.name | bold }}} } 
+
+{\color{textdark}\footnotesize {{ skill.keywords | join(', ') | bold }}}
+{%- endfor %}
+\end{itemize}
+
+\vspace{2mm}
+{\color{modernpurple}\rule{\linewidth}{1.5pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Langues}
+\vspace{1mm}
+
+\begin{itemize}[leftmargin=0.8em, nosep, itemsep=0.8mm]
+{%- for lang in languages %}
+\item {\color{elegantblack}\textbf{\small {{ lang.language | bold }}} } — {\color{textdark}\small {{ lang.fluency | bold }}}
+{%- endfor %}
+\end{itemize}
+
+{%- if references %}
+\vspace{2mm}
+{\color{modernpurple}\rule{\linewidth}{1.5pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Références}
+\vspace{1mm}
+
+\begin{itemize}[leftmargin=0.8em, nosep, itemsep=1mm]
+{%- for ref in references %}
+\item {\color{elegantblack}\textbf{\small {{ ref.name | bold }}} } 
+
+{\color{textlight}\footnotesize {{ ref.reference | bold }}}
+{%- endfor %}
+\end{itemize}
+{%- endif %}
+
+\end{minipage}%
+\hfill%
+\begin{minipage}[t]{0.69\textwidth}
+% RIGHT COLUMN - compact professional content
+
+% Professional Experience - streamlined
+\vspace{1mm}
+{\color{deepblue}\rule{\linewidth}{2pt}}
+{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Experience}
+\vspace{1mm}
+
+\begin{cventries}
+{%- for job in work %}
 \cventry
-  { {{ job.position }} }
-  { {{ job.company }} }
-  { {{ job.location }} }
-  { {{ job.startDate|replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }} }
-  { % -- description list
-    \begin{cvitems}
-    {% for bullet in job.highlights %}
-      \item {{ bullet }}
-    {% endfor %}
-    \end{cvitems}
-  }
-{% endfor %}
-
-% PROJECTS -------------------------------------------------------------------
-{% if projects %}
-\cvsection{Projects}
-{% for project in projects %}
-\cvsubsection{ {{ project.name }} }
+{ {\color{textdark}\small {{ job.position | bold }}} }
+{ {\color{elegantblack}\small {{ job.company | bold }}} }
+{ {\color{textlight}\footnotesize {{ job.location | bold }}} }
+{ {\color{textlight}\footnotesize {{ job.startDate | replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }}} }
+{
 \begin{cvitems}
-  \item {{ project.description }}
+{%- for bullet in job.highlights %}
+\item {\color{textdark}\footnotesize {{ bullet | bold }}}
+{%- endfor %}
 \end{cvitems}
-{% endfor %}
-{% endif %}
+}
+{%- endfor %}
+\end{cventries}
 
-% EDUCATION ------------------------------------------------------------------
-\cvsection{Education}
-{% for edu in education %}
+{%- if projects %}
+% Key Projects - compact
+\vspace{1mm}
+{\color{deepblue}\rule{\linewidth}{2pt}}
+{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Key Projects}
+\vspace{1mm}
+
+\begin{cventries}
+{%- for project in projects %}
 \cventry
-  { {{ edu.studyType }} }
-  { {{ edu.institution }} }
-  { {{ edu.location }} }
-  { {{ edu.startDate|replace('-', '/') }} -- {{ edu.endDate }} }
-  { % optional notes
-    {% if edu.notes %}
-    \begin{cvitems}
-      \item {{ edu.notes }}
-    \end{cvitems}
-    {% endif %}
-  }
-{% endfor %}
-
-% SKILLS ---------------------------------------------------------------------
-\cvsection{Skills}
-\begin{cvskills}
-{% for skill in skills %}
-  \cvskill
-    { {{ skill.name }} }
-    { {{ skill.keywords | join(', ') }} }
-{% endfor %}
-\end{cvskills}
-
-% LANGUAGES ------------------------------------------------------------------
-\cvsection{Languages}
-\begin{cvskills}
-{% for lang in languages %}
-  \cvskill{ {{ lang.language }} }{ {{ lang.fluency }} }
-{% endfor %}
-\end{cvskills}
-
-% REFERENCES -----------------------------------------------------------------
-{% if references %}
-\cvsection{References}
+{ {\color{modernpurple}\small {{ project.name | bold }}} }
+{ {\color{lightpurple}\small Project} }
+{ }
+{ }
+{
 \begin{cvitems}
-{% for ref in references %}
-  \item {{ ref.name }} — {{ ref.reference }}
-{% endfor %}
+\item {\color{textdark}\footnotesize {{ project.description | bold | replace('\n', ' ') | trim }}}
 \end{cvitems}
-{% endif %}
+}
+{%- endfor %}
+\end{cventries}
+{%- endif %}
+
+% Education - streamlined
+\vspace{1mm}
+{\color{deepblue}\rule{\linewidth}{2pt}}
+{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Education}
+\vspace{1mm}
+
+\begin{cventries}
+{%- for edu in education %}
+\cventry
+{ {\color{textdark}\small {{ edu.studyType | bold }}} }
+{ {\color{elegantblack}\small {{ edu.institution | bold }}} }
+{ {\color{textlight}\footnotesize {{ edu.location | bold }}} }
+{ {\color{textlight}\footnotesize {{ edu.startDate | replace('-', '/') }} -- {{ edu.endDate | replace('-', '/') }}} }
+{
+{%- if edu.area %}
+\begin{cvitems}
+\item {\color{textdark}\footnotesize Specialization: {{ edu.area | bold }}}
+{%- if edu.notes %}
+\item {\color{modernpurple}\footnotesize {{ edu.notes | bold }}}
+{%- endif %}
+\end{cvitems}
+{%- endif %}
+}
+{%- endfor %}
+\end{cventries}
+
+\end{minipage}
 
 \end{document}
