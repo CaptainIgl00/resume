@@ -1,0 +1,72 @@
+name: 🤖 ATS Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ats-validation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📂 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+        
+    - name: 📝 Install LaTeX
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          texlive-xetex \
+          texlive-latex-extra \
+          texlive-fonts-recommended
+          
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[ats,test]"
+        
+    - name: 🔧 Setup ATS dependencies
+      run: |
+        python -m resume_ats.cli setup
+        
+    - name: 🏗️ Build resume
+      run: |
+        python -m resume_ats.cli build
+        
+    - name: 🧪 Run tests
+      run: |
+        pytest tests/test_modern_ats.py -v --tb=short
+        
+    - name: 🤖 Validate ATS compatibility
+      run: |
+        python -m resume_ats.cli validate resume.yml build/Mathéo_Guilloux_CV.pdf
+        
+    - name: 📊 Extract data for verification
+      run: |
+        python -m resume_ats.cli extract build/Mathéo_Guilloux_CV.pdf --format json
+        
+    - name: 📄 Upload generated PDF
+      uses: actions/upload-artifact@v3
+      with:
+        name: resume-pdf
+        path: build/Mathéo_Guilloux_CV.pdf
+        retention-days: 30
+        
+    - name: 📊 Upload extraction report
+      uses: actions/upload-artifact@v3
+      with:
+        name: ats-report
+        path: build/
+        retention-days: 30
+        
+    - name: ✅ Validation success
+      run: |
+        echo "🎉 ATS validation passed! Resume is compatible with ATS systems." 
