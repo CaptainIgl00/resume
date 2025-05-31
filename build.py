@@ -49,28 +49,67 @@ def render_template(template_name: str, context: dict) -> str:
 
 
 def build_pdf(data: dict) -> Path:
-    """Render LaTeX and compile it to PDF using latexmk."""
+    """Render LaTeX and compile it to PDF using XeLaTeX."""
     tex_source = render_template("awesomecv.tex.j2", data)
     tex_path = BUILD_DIR / "resume.tex"
     tex_path.write_text(tex_source, encoding="utf-8")
 
-    # Compile with latexmk (fallback to xelatex if latexmk unavailable)
+    # Clean any previous artifacts
+    for pattern in ["*.aux", "*.fls", "*.fdb_latexmk", "*.log", "*.xdv"]:
+        for file in BUILD_DIR.glob(pattern):
+            try:
+                file.unlink()
+            except FileNotFoundError:
+                pass
+
     print("[+] Compiling PDF…")
+    
+    # First try with latexmk
     try:
         subprocess.run([
             "latexmk",
             "-quiet",
             "-xelatex",
+            "-interaction=nonstopmode",
             tex_path.name,
         ], cwd=BUILD_DIR, check=True)
-    except FileNotFoundError:
-        subprocess.run([
-            "xelatex",
-            tex_path.name,
-        ], cwd=BUILD_DIR, check=True)
+        pdf_exists = (BUILD_DIR / "resume.pdf").exists()
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        # Fallback to direct XeLaTeX + xdvipdfmx
+        print("[+] Falling back to XeLaTeX + xdvipdfmx…")
+        try:
+            # Run XeLaTeX to generate XDV
+            result = subprocess.run([
+                "xelatex",
+                "-interaction=nonstopmode",
+                "-no-pdf",
+                tex_path.name,
+            ], cwd=BUILD_DIR, capture_output=True, text=True)
+            
+            # Check if XDV was created
+            xdv_path = BUILD_DIR / "resume.xdv"
+            if not xdv_path.exists():
+                print(f"[!] XeLaTeX failed. Output:\n{result.stdout}\n{result.stderr}")
+                raise subprocess.CalledProcessError(result.returncode, "xelatex")
+            
+            # Convert XDV to PDF
+            subprocess.run([
+                "xdvipdfmx",
+                "resume.xdv"
+            ], cwd=BUILD_DIR, check=True)
+            
+            pdf_exists = (BUILD_DIR / "resume.pdf").exists()
+            
+        except (FileNotFoundError, subprocess.CalledProcessError) as e:
+            print(f"[!] PDF compilation failed: {e}")
+            print("[!] Make sure XeLaTeX and xdvipdfmx are installed")
+            raise
 
-    pdf_path = BUILD_DIR / "resume.pdf"
+    if not pdf_exists:
+        raise RuntimeError("PDF compilation completed but no PDF file was generated")
+
     # Rename with candidate name for convenience
+    pdf_path = BUILD_DIR / "resume.pdf"
     target = BUILD_DIR / f"{data['basics']['name'].replace(' ', '_')}_CV.pdf"
     target.write_bytes(pdf_path.read_bytes())
     print(f"[✓] PDF written to {target.relative_to(ROOT)}")
@@ -122,4 +161,7 @@ if __name__ == "__main__":
         main()
     except subprocess.CalledProcessError as exc:
         print("[!] Build failed:", exc, file=sys.stderr)
+        sys.exit(1)
+    except Exception as exc:
+        print(f"[!] Unexpected error: {exc}", file=sys.stderr)
         sys.exit(1)

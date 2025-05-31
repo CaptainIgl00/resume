@@ -13,18 +13,18 @@ basics:
       url: "https://github.com/matheoguilloux"
 
 work:
-  - company: "Neverhack (mission Airbus Defence & Space)"
+  - company: "Neverhack (mission Airbus Defence and Space)"
     position: "DevOps Engineer"
     location: "Toulouse, France"
     startDate: "2023-01"
     endDate: "Present"
     highlights:
-      - Developed and deployed backend services in **Python**, **Golang** and **Java**
-      - Built Vue.js + Grafana monitoring dashboards consumed by engineering teams
-      - Containerised applications with **Docker** and orchestrated them on **Kubernetes**
-      - Contributed to projects POLEOS, Freehopper, Astrocast and Madiran
-      - Rolled out local LLM solutions to reduce latency & data‑sovereignty risks
-      - Provisioned **GitLab Runners** and wrote **Ansible** IaC to standardise CI/CD pipelines
+      - "Developed and deployed backend services in **Python**, **Golang** and **Java**"
+      - "Built Vue.js + Grafana monitoring dashboards consumed by engineering teams"
+      - "Containerised applications with **Docker** and orchestrated them on **Kubernetes**"
+      - "Contributed to projects POLEOS, Freehopper, Astrocast and Madiran"
+      - "Rolled out local LLM solutions to reduce latency and data-sovereignty risks"
+      - "Provisioned **GitLab Runners** and wrote **Ansible** IaC to standardise CI/CD pipelines"
 
   - company: "Freelance"
     position: "DevSecOps Engineer"
@@ -32,10 +32,10 @@ work:
     startDate: "2024-01"
     endDate: "Present"
     highlights:
-      - Created marketing website for restaurant https://brasseriechezju.com/ (Nuxt.js + TypeScript + Vue.js)
-      - Built FastAPI + SQLAlchemy backend backed by **PostgreSQL** database
-      - Implemented automated CI/CD on **GitHub Actions** and deployed to an **OVH VPS**
-      - Integrated **LangChain** agent injecting live content updates powered by local LLMs
+      - "Created marketing website for restaurant https://brasseriechezju.com/ (Nuxt.js + TypeScript + Vue.js)"
+      - "Built FastAPI + SQLAlchemy backend backed by **PostgreSQL** database"
+      - "Implemented automated CI/CD on **GitHub Actions** and deployed to an **OVH VPS**"
+      - "Integrated **LangChain** agent injecting live content updates powered by local LLMs"
 
   - company: "Continental"
     position: "Apprentice – Test Bench Developer"
@@ -43,8 +43,8 @@ work:
     startDate: "2022-09"
     endDate: "2023-09"
     highlights:
-      - Filed a patent for a product‑related innovation (under NDA)
-      - Developed Python‑based test benches used in production validation
+      - "Filed a patent for a product-related innovation (under NDA)"
+      - "Developed Python-based test benches used in production validation"
 
 education:
   - institution: "INP ENSEEIHT"
@@ -62,21 +62,21 @@ education:
     notes: "Major de promotion"
 
 projects:
-  - name: "Homelab & HomeAssistant"
+  - name: "Homelab and HomeAssistant"
     description: |
-      Personal homelab hosting ~10 containerised services with 99.9 % uptime over 12 months. Uses HomeAssistant automations to streamline daily tasks.
+      Personal homelab hosting ~10 containerised services with 99.9% uptime over 12 months. Uses HomeAssistant automations to streamline daily tasks.
 
 skills:
-  - name: "Cloud & IaC"
+  - name: "Cloud and IaC"
     keywords: ["Terraform", "Ansible", "OVH", "AWS (basic)", "GCP (basic)"]
-  - name: "CI/CD & Orchestration"
+  - name: "CI/CD and Orchestration"
     keywords: ["GitLab CI", "GitHub Actions", "Kubernetes", "Docker", "Podman", "Helm"]
   - name: "Programming Languages"
     keywords: ["Python", "Go", "Java", "JavaScript/TypeScript", "C++", "Rust"]
-  - name: "Monitoring & Observability"
+  - name: "Monitoring and Observability"
     keywords: ["Grafana", "Prometheus", "ELK"]
   - name: "Team Working / Methodology"
-    keywords: ["Agile", "Scrum", "Jira", "Confluence", "V‑Model"]
+    keywords: ["Agile", "Scrum", "Jira", "Confluence", "V-Model"]
 
 languages:
   - language: "French"

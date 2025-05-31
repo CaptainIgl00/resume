@@ -3,10 +3,19 @@
 
 \documentclass[11pt,a4paper,oneside]{awesome-cv}
 
+% --- Custom tweaks for better readability -------------
+\setmainfont{Roboto}           % Roboto is embedded → safe and clean
+\geometry{left=2cm,right=1.8cm,top=1.8cm,bottom=1.8cm}
+
+% Better spacing
+\renewcommand{\acvSectionTopSkip}{5mm}
+\setlength{\itemsep}{0.4em}
+
+% Cleaner header separators
+\renewcommand{\acvHeaderSocialSep}{\enspace|\enspace}
+
 %----------  CONFIG  ----------------------------------------------------------
-\geometry{left=1.5cm, right=1.5cm, top=1.6cm, bottom=1.6cm, footskip=.5cm}
 \definecolor{awesome}{HTML}{007ACC}  % primary colour
-\setmainfont{Helvetica Neue}
 
 %----------  PERSONAL DATA  ---------------------------------------------------
 \name{ {{ basics.name.split(' ')[0] }} }{ {{ ' '.join(basics.name.split(' ')[1:]) }} }
@@ -21,7 +30,7 @@
 
 %-----------------------------------------------------------------------------
 \begin{document}
-\makecvheader
+\makecvheader[L]  % L = left aligned for better readability
 
 % SUMMARY --------------------------------------------------------------------
 \cvsection{Summary}
