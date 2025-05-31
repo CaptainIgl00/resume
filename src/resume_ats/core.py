@@ -1,0 +1,219 @@
+"""Core resume building functionality."""
+
+import json
+import shutil
+import subprocess
+from pathlib import Path
+from typing import Dict, Any, Optional
+
+import yaml
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+from rich.console import Console
+from rich.progress import Progress, SpinnerColumn, TextColumn
+
+from .models import ResumeData, BuildConfig
+from .exceptions import BuildError, TemplateError, CompilationError
+
+
+class ResumeBuilder:
+    """Main resume builder class."""
+    
+    def __init__(self, config: Optional[BuildConfig] = None):
+        """Initialize the resume builder.
+        
+        Args:
+            config: Build configuration. Uses defaults if None.
+        """
+        self.config = config or BuildConfig()
+        self.console = Console()
+        self._setup_jinja_env()
+    
+    def _setup_jinja_env(self) -> None:
+        """Setup Jinja2 environment."""
+        self.jinja_env = Environment(
+            loader=FileSystemLoader(str(self.config.template_dir)),
+            autoescape=select_autoescape(["html", "xml"]),
+            trim_blocks=True,
+            lstrip_blocks=True,
+        )
+    
+    @classmethod
+    def from_yaml(cls, yaml_path: Path, config: Optional[BuildConfig] = None) -> 'ResumeBuilder':
+        """Create builder from YAML file.
+        
+        Args:
+            yaml_path: Path to resume YAML file
+            config: Build configuration
+            
+        Returns:
+            Configured ResumeBuilder instance
+        """
+        builder = cls(config)
+        builder.load_data(yaml_path)
+        return builder
+    
+    def load_data(self, yaml_path: Path) -> None:
+        """Load resume data from YAML file.
+        
+        Args:
+            yaml_path: Path to YAML file
+            
+        Raises:
+            BuildError: If YAML cannot be loaded or validated
+        """
+        try:
+            with yaml_path.open("r", encoding="utf-8") as f:
+                raw_data = yaml.safe_load(f)
+            
+            # Validate with Pydantic
+            self.data = ResumeData(**raw_data)
+            self.console.print(f"✅ Loaded resume data from {yaml_path}")
+            
+        except Exception as e:
+            raise BuildError(f"Failed to load resume data: {e}") from e
+    
+    def _prepare_build_dir(self) -> None:
+        """Prepare build directory."""
+        if self.config.clean_build and self.config.output_dir.exists():
+            shutil.rmtree(self.config.output_dir)
+        
+        self.config.output_dir.mkdir(exist_ok=True)
+        
+        # Copy required assets
+        self._copy_assets()
+    
+    def _copy_assets(self) -> None:
+        """Copy required assets to build directory."""
+        awesome_cv_cls = self.config.template_dir / "awesome-cv.cls"
+        if awesome_cv_cls.exists():
+            shutil.copy2(awesome_cv_cls, self.config.output_dir / "awesome-cv.cls")
+    
+    def render_template(self, template_name: str, **extra_context) -> str:
+        """Render template with resume data.
+        
+        Args:
+            template_name: Name of template file
+            **extra_context: Additional context variables
+            
+        Returns:
+            Rendered template content
+            
+        Raises:
+            TemplateError: If template rendering fails
+        """
+        try:
+            template = self.jinja_env.get_template(template_name)
+            context = self.data.model_dump()
+            context.update(extra_context)
+            return template.render(**context)
+        except Exception as e:
+            raise TemplateError(f"Failed to render template {template_name}: {e}") from e
+    
+    def build_pdf(self) -> Path:
+        """Build PDF resume.
+        
+        Returns:
+            Path to generated PDF
+            
+        Raises:
+            CompilationError: If LaTeX compilation fails
+        """
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            console=self.console,
+        ) as progress:
+            task = progress.add_task("Generating PDF...", total=None)
+            
+            try:
+                # Render LaTeX
+                tex_content = self.render_template("awesomecv.tex.j2")
+                tex_path = self.config.output_dir / "resume.tex"
+                tex_path.write_text(tex_content, encoding="utf-8")
+                
+                progress.update(task, description="Compiling LaTeX...")
+                
+                # Compile to XDV
+                result = subprocess.run([
+                    "xelatex",
+                    "-interaction=nonstopmode", 
+                    "-no-pdf",
+                    "-halt-on-error",
+                    tex_path.name,
+                ], cwd=self.config.output_dir, capture_output=True, text=True)
+                
+                if result.returncode != 0:
+                    raise CompilationError(f"XeLaTeX failed: {result.stderr}")
+                
+                # Convert to PDF
+                progress.update(task, description="Converting to PDF...")
+                result = subprocess.run([
+                    "xdvipdfmx", "-q", "resume.xdv"
+                ], cwd=self.config.output_dir, capture_output=True, text=True)
+                
+                if result.returncode != 0:
+                    raise CompilationError(f"PDF conversion failed: {result.stderr}")
+                
+                # Create final PDF with name
+                pdf_path = self.config.output_dir / "resume.pdf"
+                final_name = f"{self.data.basics.name.replace(' ', '_')}_CV.pdf"
+                final_path = self.config.output_dir / final_name
+                shutil.copy2(pdf_path, final_path)
+                
+                progress.update(task, description="✅ PDF generated successfully")
+                self.console.print(f"📄 PDF saved to: {final_path}")
+                return final_path
+                
+            except FileNotFoundError as e:
+                raise CompilationError(f"LaTeX tools not found: {e}") from e
+            except Exception as e:
+                raise CompilationError(f"PDF generation failed: {e}") from e
+    
+    def build_html(self) -> Path:
+        """Build HTML resume.
+        
+        Returns:
+            Path to generated HTML file
+        """
+        html_content = self.render_template("simple.html.j2")
+        html_path = self.config.output_dir / "index.html"
+        html_path.write_text(html_content, encoding="utf-8")
+        
+        self.console.print(f"🌐 HTML saved to: {html_path}")
+        return html_path
+    
+    def build_json(self) -> Path:
+        """Build JSON export of resume data.
+        
+        Returns:
+            Path to generated JSON file
+        """
+        json_path = self.config.output_dir / "resume.json"
+        json_content = self.data.model_dump_json(indent=2)
+        json_path.write_text(json_content, encoding="utf-8")
+        
+        self.console.print(f"📋 JSON saved to: {json_path}")
+        return json_path
+    
+    def build_all(self) -> Dict[str, Path]:
+        """Build all configured formats.
+        
+        Returns:
+            Dictionary mapping format names to output paths
+        """
+        self._prepare_build_dir()
+        
+        results = {}
+        
+        for format_name in self.config.formats:
+            if format_name == "pdf":
+                results["pdf"] = self.build_pdf()
+            elif format_name == "html":
+                results["html"] = self.build_html()
+            elif format_name == "json":
+                results["json"] = self.build_json()
+            else:
+                self.console.print(f"⚠️  Unknown format: {format_name}")
+        
+        self.console.print("🎉 Build completed successfully!")
+        return results 

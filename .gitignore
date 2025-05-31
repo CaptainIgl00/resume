@@ -1,11 +1,3 @@
-# Build outputs
-build/
-
-# Virtual environments
-.venv/
-venv/
-env/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -14,6 +6,45 @@ __pycache__/
 .Python
 pip-log.txt
 pip-delete-this-directory.txt
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.nox/
 
 # LaTeX auxiliary files
 *.aux
@@ -27,56 +58,13 @@ pip-delete-this-directory.txt
 *.xdv
 *.synctex.gz
 
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Local environment
-.env
-.env.local
-
-# LaTeX build files
-*.aux
-*.fdb_latexmk
-*.fls
-*.log
-*.out
-*.pdf
-*.synctex.gz
-*.toc
-*.xdv
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-.venv/
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
 # IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.cursor/
 
 # OS
 .DS_Store
@@ -87,13 +75,20 @@ venv.bak/
 ehthumbs.db
 Thumbs.db
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
+# Local environment
+.env
+.env.local
+
+# Documentation
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Backup files
+*.backup
+*.bak
+*.old
