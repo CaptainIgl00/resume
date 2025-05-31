@@ -1,0 +1,76 @@
+<!-- simple.html.j2 – Minimal responsive HTML résumé (Jinja2) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ basics.name }} – CV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --accent:#007acc; --fg:#222; --bg:#fff; }
+    *{box-sizing:border-box;}
+    body{font-family:Arial,Helvetica,sans-serif;margin:0 auto;max-width:900px;color:var(--fg);background:var(--bg);line-height:1.4;padding:2rem;}
+    h1{margin-top:0;color:var(--accent);font-size:2.2rem;}
+    h2{color:var(--accent);margin-top:2rem;margin-bottom:0.5rem;}
+    .job{margin-bottom:1.5rem;}
+    .job-title{font-weight:600;}
+    ul{margin:0.3rem 0 0 1.2rem;padding:0;}
+    li{margin:0.2rem 0;}
+    .skills span{display:inline-block;margin:2px 6px;padding:2px 8px;background:#ececec;border-radius:4px;font-size:0.9rem;}
+    @media print{body{padding:0;font-size:0.9rem;}h1{font-size:1.8rem;}h2{font-size:1.2rem;}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{ basics.name }}</h1>
+    <p>{{ basics.label }} — {{ basics.location.city }}, {{ basics.location.countryCode }} · <a href="mailto:{{ basics.email }}">{{ basics.email }}</a></p>
+    <p>{{ basics.summary }}</p>
+  </header>
+
+  <section>
+    <h2>Experience</h2>
+    {% for job in work %}
+    <div class="job">
+      <div class="job-title">{{ job.position }} — {{ job.company }} ({{ job.startDate }} – {{ job.endDate }})</div>
+      <ul>
+        {% for bullet in job.highlights %}<li>{{ bullet }}</li>{% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </section>
+
+  {% if projects %}
+  <section>
+    <h2>Projects</h2>
+    {% for project in projects %}
+    <p><strong>{{ project.name }}</strong> — {{ project.description }}</p>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <section>
+    <h2>Education</h2>
+    {% for edu in education %}
+    <p><strong>{{ edu.institution }}</strong>, {{ edu.studyType }} ({{ edu.startDate }} – {{ edu.endDate }})</p>
+    {% if edu.notes %}<p><em>{{ edu.notes }}</em></p>{% endif %}
+    {% endfor %}
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    {% for skill in skills %}
+    <p><strong>{{ skill.name }}:</strong>
+      <span class="skills">
+        {% for k in skill.keywords %}<span>{{ k }}</span>{% endfor %}
+      </span>
+    </p>
+    {% endfor %}
+  </section>
+
+  <section>
+    <h2>Languages</h2>
+    <ul>
+      {% for lang in languages %}<li>{{ lang.language }} — {{ lang.fluency }}</li>{% endfor %}
+    </ul>
+  </section>
+</body>
+</html>

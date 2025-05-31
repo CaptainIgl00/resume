@@ -1,0 +1,103 @@
+% awesomecv.tex.j2 – Jinja2 template for Awesome‑CV
+% Compile with xelatex or latexmk (see build.py)
+
+\documentclass[11pt,a4paper,oneside]{awesome-cv}
+
+%----------  CONFIG  ----------------------------------------------------------
+\geometry{left=1.5cm, right=1.5cm, top=1.6cm, bottom=1.6cm, footskip=.5cm}
+\definecolor{awesome}{HTML}{007ACC}  % primary colour
+\setmainfont{Helvetica Neue}
+
+%----------  PERSONAL DATA  ---------------------------------------------------
+\name{ {{ basics.name.split(' ')[0] }} }{ {{ ' '.join(basics.name.split(' ')[1:]) }} }
+\position{ {{ basics.label }} }
+\email{ {{ basics.email }} }
+\location{ {{ basics.location.city }}, {{ basics.location.countryCode }} }
+
+% Add other fields if present
+{% for p in basics.profiles or [] %}
+\github{ {{ p.username }} }
+{% endfor %}
+
+%-----------------------------------------------------------------------------
+\begin{document}
+\makecvheader
+
+% SUMMARY --------------------------------------------------------------------
+\cvsection{Summary}
+\small{ {{ basics.summary }} }\\
+
+% EXPERIENCE -----------------------------------------------------------------
+\cvsection{Experience}
+{% for job in work %}
+\cvevent
+  { {{ job.position }} }
+  { {{ job.company }} }
+  { {{ job.location }} }
+  { {{ job.startDate|replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }} }
+  { % -- description list
+    \begin{cvitems}
+    {% for bullet in job.highlights %}
+      \item {{ bullet }}
+    {% endfor %}
+    \end{cvitems}
+  }
+{% endfor %}
+
+% PROJECTS -------------------------------------------------------------------
+{% if projects %}
+\cvsection{Projects}
+{% for project in projects %}
+\cvsubsection{ {{ project.name }} }
+\begin{cvitems}
+  \item {{ project.description }}
+\end{cvitems}
+{% endfor %}
+{% endif %}
+
+% EDUCATION ------------------------------------------------------------------
+\cvsection{Education}
+{% for edu in education %}
+\cvevent
+  { {{ edu.studyType }} }
+  { {{ edu.institution }} }
+  { {{ edu.location }} }
+  { {{ edu.startDate|replace('-', '/') }} -- {{ edu.endDate }} }
+  { % optional notes
+    {% if edu.notes %}
+    \begin{cvitems}
+      \item {{ edu.notes }}
+    \end{cvitems}
+    {% endif %}
+  }
+{% endfor %}
+
+% SKILLS ---------------------------------------------------------------------
+\cvsection{Skills}
+\begin{cvskills}
+{% for skill in skills %}
+  \cvskill
+    { {{ skill.name }} }
+    { {{ skill.keywords | join(', ') }} }
+{% endfor %}
+\end{cvskills}
+
+% LANGUAGES ------------------------------------------------------------------
+\cvsection{Languages}
+\begin{cvskills}
+{% for lang in languages %}
+  \cvskill{ {{ lang.language }} }{ {{ lang.fluency }} }
+{% endfor %}
+\end{cvskills}
+
+% REFERENCES -----------------------------------------------------------------
+{% if references %}
+\cvsection{References}
+\begin{cvitems}
+{% for ref in references %}
+  \item {{ ref.name }} — {{ ref.reference }}
+{% endfor %}
+\end{cvitems}
+{% endif %}
+
+\end{document}
