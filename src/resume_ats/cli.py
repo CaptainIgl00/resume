@@ -139,10 +139,10 @@ def extract(
                 console.print(skills_panel)
                 
         elif output_format == "json":
-            console.print(data.json(indent=2))
+            console.print(data.model_dump_json(indent=2))
         elif output_format == "yaml":
             import yaml
-            console.print(yaml.dump(data.dict(), default_flow_style=False))
+            console.print(yaml.dump(data.model_dump(), default_flow_style=False))
         else:
             console.print(f"[red]Unknown format: {output_format}[/red]")
             raise typer.Exit(code=1)
