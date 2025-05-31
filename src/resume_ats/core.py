@@ -3,6 +3,7 @@
 import json
 import shutil
 import subprocess
+import re
 from pathlib import Path
 from typing import Dict, Any, Optional
 
@@ -13,6 +14,115 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from .models import ResumeData, BuildConfig
 from .exceptions import BuildError, TemplateError, CompilationError
+
+
+def process_bold_markdown(text: str) -> str:
+    """Convert **text** markdown to LaTeX bold format and escape special chars.
+    
+    Args:
+        text: Input text with **bold** markdown
+        
+    Returns:
+        Text with LaTeX bold formatting and escaped special characters
+    """
+    if not isinstance(text, str):
+        return text
+    
+    # First, escape special LaTeX characters
+    text = text.replace('~', '\\textasciitilde{}')
+    text = text.replace('&', '\\&')
+    text = text.replace('%', '\\%')
+    text = text.replace('$', '\\$')
+    text = text.replace('#', '\\#')
+    text = text.replace('^', '\\textasciicircum{}')
+    text = text.replace('_', '\\_')
+    text = text.replace('{', '\\{')
+    text = text.replace('}', '\\}')
+    
+    # Then convert **text** to \textbf{text}
+    return re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', text)
+
+
+def process_links(text: str) -> str:
+    r"""Convert URLs to clickable LaTeX href links.
+    
+    Args:
+        text: Input text that may contain URLs
+        
+    Returns:
+        Text with URLs converted to LaTeX \href{}{} format
+    """
+    if not isinstance(text, str):
+        return text
+    
+    # Pattern to match http:// and https:// URLs
+    url_pattern = r'(https?://[^\s]+)'
+    
+    def make_link(match):
+        url = match.group(1)
+        # Remove trailing punctuation that might not be part of the URL
+        if url.endswith(('.', ',', ')', ']', '}', '!')):
+            url = url[:-1]
+        return f'\\href{{{url}}}{{{url}}}'
+    
+    return re.sub(url_pattern, make_link, text)
+
+
+def process_bold_and_links(text: str) -> str:
+    """Apply both bold markdown and link processing.
+    
+    Args:
+        text: Input text with markdown and URLs
+        
+    Returns:
+        Text with both bold formatting and clickable links
+    """
+    if not isinstance(text, str):
+        return text
+    
+    # First, convert URLs to \href{}{} (before escaping special chars)
+    url_pattern = r'(https?://[^\s]+)'
+    
+    def make_link(match):
+        url = match.group(1)
+        # Remove trailing punctuation that might not be part of the URL
+        if url.endswith(('.', ',', ')', ']', '}', '!')):
+            url = url[:-1]
+        return f'\\href{{{url}}}{{{url}}}'
+    
+    text = re.sub(url_pattern, make_link, text)
+    
+    # Then escape special LaTeX characters (but preserve our \href commands)
+    # We need to be careful not to escape the \ in \href
+    text = text.replace('~', '\\textasciitilde{}')
+    text = text.replace('&', '\\&')
+    text = text.replace('%', '\\%')
+    text = text.replace('$', '\\$')
+    text = text.replace('#', '\\#')
+    text = text.replace('^', '\\textasciicircum{}')
+    text = text.replace('_', '\\_')
+    
+    # For { and }, we need to be careful not to break \href{url}{text}
+    # Split on \href commands and process non-href parts separately
+    parts = re.split(r'(\\href\{[^}]+\}\{[^}]+\})', text)
+    processed_parts = []
+    
+    for i, part in enumerate(parts):
+        if part.startswith('\\href{'):
+            # This is an href command, don't escape it
+            processed_parts.append(part)
+        else:
+            # This is regular text, escape { and }
+            part = part.replace('{', '\\{')
+            part = part.replace('}', '\\}')
+            processed_parts.append(part)
+    
+    text = ''.join(processed_parts)
+    
+    # Finally convert **text** to \textbf{text}
+    text = re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', text)
+    
+    return text
 
 
 class ResumeBuilder:
@@ -29,13 +139,18 @@ class ResumeBuilder:
         self._setup_jinja_env()
     
     def _setup_jinja_env(self) -> None:
-        """Setup Jinja2 environment."""
+        """Setup Jinja2 environment with custom filters."""
         self.jinja_env = Environment(
             loader=FileSystemLoader(str(self.config.template_dir)),
             autoescape=select_autoescape(["html", "xml"]),
             trim_blocks=True,
             lstrip_blocks=True,
         )
+        
+        # Add custom filter for bold markdown processing
+        self.jinja_env.filters['bold'] = process_bold_markdown
+        self.jinja_env.filters['links'] = process_links
+        self.jinja_env.filters['bold_and_links'] = process_bold_and_links
     
     @classmethod
     def from_yaml(cls, yaml_path: Path, config: Optional[BuildConfig] = None) -> 'ResumeBuilder':
@@ -87,6 +202,14 @@ class ResumeBuilder:
         awesome_cv_cls = self.config.template_dir / "awesome-cv.cls"
         if awesome_cv_cls.exists():
             shutil.copy2(awesome_cv_cls, self.config.output_dir / "awesome-cv.cls")
+        
+        # Copy logos directory if it exists
+        logos_dir = Path("logos")
+        if logos_dir.exists():
+            build_logos_dir = self.config.output_dir / "logos"
+            if build_logos_dir.exists():
+                shutil.rmtree(build_logos_dir)
+            shutil.copytree(logos_dir, build_logos_dir)
     
     def render_template(self, template_name: str, **extra_context) -> str:
         """Render template with resume data.

@@ -37,6 +37,8 @@ setup: install-ats ## Setup ATS dependencies (NLTK, spaCy)
 # Building
 build: ## Build resume (PDF by default)
 	@echo "$(CYAN)🏗️  Building resume...$(NC)"
+	@mkdir -p build
+	@cp *.png build/ 2>/dev/null || true
 	$(PYTHON) -m resume_ats.cli build
 
 build-all: ## Build all formats (PDF, HTML, JSON)
