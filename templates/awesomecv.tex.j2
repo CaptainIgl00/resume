@@ -77,7 +77,7 @@
 {\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Summary}
 \vspace{1mm}
 
-{\color{textdark}{{ basics.summary | bold | replace('\n', ' ') | trim }}}
+{\color{textdark}{{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
 
 \vspace{2mm}
 
@@ -86,23 +86,6 @@
 \begin{minipage}[t]{0.28\textwidth}
 % LEFT SIDEBAR - compact and elegant
 
-{\color{modernpurple}\rule{\linewidth}{1.5pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Contact}
-\vspace{1mm}
-
-\faEnvelope\ \href{mailto:{{ basics.email }}}{\color{deepblue}\small {{ basics.email }}} 
-
-{%- for p in basics.profiles or [] %}
-{%- if p.network == "GitHub" %}
-
-\faGithub\ \href{https://github.com/{{ p.username }}}{\color{deepblue}\small {{ p.username }}} 
-{%- elif p.network == "LinkedIn" %}  
-
-\faLinkedin\ \href{https://linkedin.com/in/{{ p.username }}}{\color{deepblue}\small {{ p.username }}} 
-{%- endif %}
-{%- endfor %}
-
-\vspace{2mm}
 {\color{modernpurple}\rule{\linewidth}{1.5pt}}
 {\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Compétences}
 \vspace{1mm}
@@ -162,7 +145,7 @@
 {
 \begin{cvitems}
 {%- for bullet in job.highlights %}
-\item {\color{textdark}\footnotesize {{ bullet | bold }}}
+\item {\color{textdark}\footnotesize {{ bullet | bold_and_links }}}
 {%- endfor %}
 \end{cvitems}
 }
@@ -180,12 +163,12 @@
 {%- for project in projects %}
 \cventry
 { {\color{modernpurple}\small {{ project.name | bold }}} }
-{ {\color{lightpurple}\small Project} }
+{ }
 { }
 { }
 {
 \begin{cvitems}
-\item {\color{textdark}\footnotesize {{ project.description | bold | replace('\n', ' ') | trim }}}
+\item {\color{textdark}\footnotesize {{ project.description | bold_and_links | replace('\n', ' ') | trim }}}
 \end{cvitems}
 }
 {%- endfor %}

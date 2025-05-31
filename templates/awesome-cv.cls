@@ -245,19 +245,19 @@
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \@email%
+          \href{mailto:\@email}{\@email}%
         }%
       \ifthenelse{\isundefined{\@github}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          github.com/\@github%
+          \href{https://github.com/\@github}{github.com/\@github}%
         }%
       \ifthenelse{\isundefined{\@linkedin}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          linkedin.com/in/\@linkedin%
+          \href{https://linkedin.com/in/\@linkedin}{linkedin.com/in/\@linkedin}%
         }%
       \ifthenelse{\isundefined{\@extrainfo}}%
         {}%

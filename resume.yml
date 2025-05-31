@@ -6,17 +6,20 @@ basics:
     city: "Toulouse"
     countryCode: "FR"
   summary: |
-    DevOps engineer with **3 years' experience** helping ESNs and startups automate and deploy their cloud infrastructure. Available from **23 July** — see my work at https://guilloux.ovh.
+    DevOps engineer with **3 years' experience** helping ESNs and startups automate and deploy their cloud infrastructure. Available from **23 July** — see my work at https://matheo.guilloux.ovh.
   profiles:
     - network: "GitHub"
-      username: "matheoguilloux"
+      username: "CaptainIgl00"
       url: "https://github.com/CaptainIgl00"
+    - network: "LinkedIn"
+      username: "mathéo-guilloux"
+      url: "https://www.linkedin.com/in/mathéo-guilloux/"
 
 work:
   - company: "Neverhack (mission Airbus Defence and Space)"
     position: "DevOps Engineer"
     location: "Toulouse, France"
-    startDate: "2023-01"
+    startDate: "2023-11"
     endDate: "Present"
     highlights:
       - "Developed and deployed backend services in **Python**, **Golang** and **Java**"
@@ -29,7 +32,7 @@ work:
   - company: "Freelance"
     position: "DevSecOps Engineer"
     location: "Remote, France"
-    startDate: "2024-01"
+    startDate: "2025-01"
     endDate: "Present"
     highlights:
       - "Created marketing website for restaurant https://brasseriechezju.com/ (**Nuxt.js + TypeScript + Vue.js**)"
@@ -40,7 +43,7 @@ work:
   - company: "Continental"
     position: "Apprentice – Test Bench Developer"
     location: "Toulouse, France"
-    startDate: "2022-09"
+    startDate: "2022-06"
     endDate: "2023-09"
     highlights:
       - "Filed a **patent** for a product-related innovation"
@@ -62,6 +65,9 @@ education:
     notes: "**Class Valedictorian**"
 
 projects:
+  - name: "**Browser Bot**"
+    description: |
+      **LangChain + GPT-4** autonomous web agent with real-time monitoring. Built **Docker** architecture with **noVNC** interface for observability. **FastAPI** backend with **SQLite** storage for automated web scraping and data extraction.
   - name: "**Homelab and HomeAssistant**"
     description: |
       Personal homelab hosting **10 containerised services** with **99.9% uptime** over 12 months. Uses **HomeAssistant automations** to streamline daily tasks.
