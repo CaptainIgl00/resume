@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v4
       
     - name: 🐍 Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
         cache: 'pip'
@@ -54,14 +54,14 @@ jobs:
         python -m resume_ats.cli extract build/Mathéo_Guilloux_CV.pdf --format json
         
     - name: 📄 Upload generated PDF
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: resume-pdf
         path: build/Mathéo_Guilloux_CV.pdf
         retention-days: 30
         
     - name: 📊 Upload extraction report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ats-report
         path: build/
