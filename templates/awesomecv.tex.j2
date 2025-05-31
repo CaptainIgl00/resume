@@ -38,13 +38,13 @@
 %-------------------------------------------------------------------------------
 %                Compact Page Layout
 %-------------------------------------------------------------------------------
-\geometry{left=1.2cm, right=1.2cm, top=1cm, bottom=1cm, footskip=0.3cm}
+\geometry{left=0.8cm, right=0.8cm, top=0.6cm, bottom=0.6cm, footskip=0.2cm}
 
-% Compact spacing adjustments
-\renewcommand{\acvSectionTopSkip}{1.5mm}
-\renewcommand{\acvSectionContentTopSkip}{1mm}
-\setlength{\parskip}{0.05em}
-\setlength{\itemsep}{0.08em}
+% Very compact spacing adjustments
+\renewcommand{\acvSectionTopSkip}{0.8mm}
+\renewcommand{\acvSectionContentTopSkip}{0.6mm}
+\setlength{\parskip}{0.03em}
+\setlength{\itemsep}{0.05em}
 
 % Header separator
 \renewcommand{\acvHeaderSocialSep}{\enspace|\enspace}
@@ -72,14 +72,14 @@
 \makecvheader[C]
 
 % Professional Summary - compact and elegant
-\vspace{1mm}
+\vspace{0.5mm}
 {\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Summary}
-\vspace{1mm}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Summary}
+\vspace{0.8mm}
 
 {\color{textdark}{{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
 
-\vspace{2mm}
+\vspace{1.5mm}
 
 % Two-column layout - optimized spacing
 \noindent%
@@ -87,39 +87,39 @@
 % LEFT SIDEBAR - compact and elegant
 
 {\color{modernpurple}\rule{\linewidth}{1.5pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Compétences}
-\vspace{1mm}
+{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Skills}
+\vspace{0.8mm}
 
-\begin{itemize}[leftmargin=0.8em, nosep, itemsep=0.8mm]
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
 {%- for skill in skills %}
-\item {\color{elegantblack}\textbf{\small {{ skill.name | bold }}} } 
+\item {\color{elegantblack}\textbf{\scriptsize {{ skill.name | bold }}} } 
 
-{\color{textdark}\footnotesize {{ skill.keywords | join(', ') | bold }}}
+{\color{textdark}\tiny {{ skill.keywords | join(', ') | bold }}}
 {%- endfor %}
 \end{itemize}
 
-\vspace{2mm}
+\vspace{1.5mm}
 {\color{modernpurple}\rule{\linewidth}{1.5pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Langues}
-\vspace{1mm}
+{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Languages}
+\vspace{0.8mm}
 
-\begin{itemize}[leftmargin=0.8em, nosep, itemsep=0.8mm]
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
 {%- for lang in languages %}
-\item {\color{elegantblack}\textbf{\small {{ lang.language | bold }}} } — {\color{textdark}\small {{ lang.fluency | bold }}}
+\item {\color{elegantblack}\textbf{\scriptsize {{ lang.language | bold }}} } — {\color{textdark}\scriptsize {{ lang.fluency | bold }}}
 {%- endfor %}
 \end{itemize}
 
 {%- if references %}
-\vspace{2mm}
+\vspace{1.5mm}
 {\color{modernpurple}\rule{\linewidth}{1.5pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Références}
-\vspace{1mm}
+{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} References}
+\vspace{0.8mm}
 
-\begin{itemize}[leftmargin=0.8em, nosep, itemsep=1mm]
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.8mm]
 {%- for ref in references %}
-\item {\color{elegantblack}\textbf{\small {{ ref.name | bold }}} } 
+\item {\color{elegantblack}\textbf{\scriptsize {{ ref.name | bold }}} } 
 
-{\color{textlight}\footnotesize {{ ref.reference | bold }}}
+{\color{textlight}\tiny {{ ref.reference | bold }}}
 {%- endfor %}
 \end{itemize}
 {%- endif %}
@@ -130,10 +130,10 @@
 % RIGHT COLUMN - compact professional content
 
 % Professional Experience - streamlined
-\vspace{1mm}
+\vspace{0.5mm}
 {\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Experience}
-\vspace{1mm}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Experience}
+\vspace{0.8mm}
 
 \begin{cventries}
 {%- for job in work %}
@@ -154,10 +154,10 @@
 
 {%- if projects %}
 % Key Projects - compact
-\vspace{1mm}
+\vspace{0.8mm}
 {\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Key Projects}
-\vspace{1mm}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Key Projects}
+\vspace{0.8mm}
 
 \begin{cventries}
 {%- for project in projects %}
@@ -176,10 +176,10 @@
 {%- endif %}
 
 % Education - streamlined
-\vspace{1mm}
+\vspace{0.8mm}
 {\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{12pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Education}
-\vspace{1mm}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Education}
+\vspace{0.8mm}
 
 \begin{cventries}
 {%- for edu in education %}

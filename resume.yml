@@ -6,7 +6,7 @@ basics:
     city: "Toulouse"
     countryCode: "FR"
   summary: |
-    DevOps engineer with **3 years' experience** helping ESNs and startups automate and deploy their cloud infrastructure. Available from **23 July** — see my work at https://matheo.guilloux.ovh.
+    DevOps engineer with **3 years' experience** helping companies automate and deploy cloud infrastructure. Available from **23 July** — see https://matheo.guilloux.ovh.
   profiles:
     - network: "GitHub"
       username: "CaptainIgl00"
@@ -22,12 +22,11 @@ work:
     startDate: "2023-11"
     endDate: "Present"
     highlights:
-      - "Developed and deployed backend services in **Python**, **Golang** and **Java**"
-      - "Built **Vue.js + Grafana** monitoring dashboards consumed by engineering teams"
-      - "Containerised applications with **Docker** and orchestrated them on **Kubernetes**"
-      - "Contributed to projects **POLEOS**, **Freehopper**, **Astrocast** and **Madiran**"
-      - "Rolled out local **LLM solutions** to reduce latency and data-sovereignty risks"
-      - "Provisioned **GitLab Runners** and wrote **Ansible** IaC to standardise **CI/CD pipelines**"
+      - "**First Airbus DS project** to deploy **LLMs in production** (**Ollama + Langchain**), achieving **80% reduction** in manual tasks across satellite ground systems"
+      - "Architected **microservices platforms** for **satellite RF testing** (**Vue.js + FastAPI + Golang**), reducing test execution time from **30 minutes to 2 clicks**"
+      - "Led **DevOps transformation** on **4 critical space projects** (**POLEOS**, **Freehopper**, **Astrocast**, **Madiran**) serving satellite communications and IoT systems"
+      - "Deployed **24/7 automated testing** infrastructure with **Docker/Kubernetes** for **optical laser comms** and **beam hopping** space technologies"
+      - "Modernized **legacy Matlab/C++** codebases to **Python microservices**, enabling real-time monitoring with **Grafana** dashboards"
 
   - company: "Freelance"
     position: "DevSecOps Engineer"
@@ -35,10 +34,8 @@ work:
     startDate: "2025-01"
     endDate: "Present"
     highlights:
-      - "Created marketing website for restaurant https://brasseriechezju.com/ (**Nuxt.js + TypeScript + Vue.js**)"
-      - "Built **FastAPI + SQLAlchemy** backend backed by **PostgreSQL** database"
-      - "Implemented automated **CI/CD** on **GitHub Actions** and deployed to an **OVH VPS**"
-      - "Integrated **LangChain** agent injecting live content updates powered by **local LLMs**"
+      - "Created marketing website https://brasseriechezju.com/ (**Nuxt.js + TypeScript + Vue.js**)"
+      - "Built **FastAPI + SQLAlchemy** backend with **PostgreSQL** and automated **CI/CD** on **GitHub Actions** deployed to **OVH VPS**"
 
   - company: "Continental"
     position: "Apprentice – Test Bench Developer"
@@ -46,8 +43,8 @@ work:
     startDate: "2022-06"
     endDate: "2023-09"
     highlights:
-      - "Filed a **patent** for a product-related innovation"
-      - "Developed **Python-based test benches** used in production validation"
+      - "**Filed UWB patent** for next-generation automotive technology (already in **smartphones/AirTags**), integrating **real-time AI classification** with RF systems"
+      - "Architected **automated testing infrastructure** for **Ultra Wide Band** and **BLE** systems, enabling **24/7 autonomous testing** in **anechoic chambers**"
 
 education:
   - institution: "INP ENSEEIHT"
@@ -67,10 +64,10 @@ education:
 projects:
   - name: "**Browser Bot**"
     description: |
-      **LangChain + GPT-4** autonomous web agent with real-time monitoring. Built **Docker** architecture with **noVNC** interface for observability. **FastAPI** backend with **SQLite** storage for automated web scraping and data extraction.
-  - name: "**Homelab and HomeAssistant**"
+      **LangChain + GPT-4** autonomous web agent with real-time monitoring. Built **Docker** architecture with **noVNC** interface for observability.
+  - name: "**Production Homelab & IoT Infrastructure**"
     description: |
-      Personal homelab hosting **10 containerised services** with **99.9% uptime** over 12 months. Uses **HomeAssistant automations** to streamline daily tasks.
+      **Self-hosted production environment** with **99.9% uptime** over 12 months, featuring **10+ containerized services**, **real-time energy monitoring** (**ESP32 + PZEM**), and **open-source contributions** to **Home Assistant** ecosystem.
 
 skills:
   - name: "Cloud and IaC"
