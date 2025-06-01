@@ -52,7 +52,7 @@ jobs:
     - name: 📦 Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e ".[test]"
+        pip install -e ".[test,ats]"
         
     - name: 🧪 Run unit tests
       run: |
@@ -66,7 +66,6 @@ jobs:
     - name: 📊 Generate coverage report
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       run: |
-        pip install -e ".[ats]"
         python -m resume_ats.cli setup
         pytest tests/test_modern_ats.py --cov=src/resume_ats --cov-report=xml --cov-report=html
         
@@ -80,7 +79,6 @@ jobs:
     - name: 🏗️ Test build (full test)
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       run: |
-        pip install -e ".[ats]"
         python -m resume_ats.cli setup
         python -m resume_ats.cli build
         python -m resume_ats.cli extract build/Mathéo_Guilloux_CV.pdf --format table
@@ -100,7 +98,8 @@ jobs:
     - name: 📦 Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e ".[dev]"
+        pip install -e ".[dev,ats]"
+        pip install types-PyYAML
         
     - name: 🎨 Check code formatting
       run: |

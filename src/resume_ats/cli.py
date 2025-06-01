@@ -16,13 +16,13 @@ from .models import BuildConfig
 
 app = typer.Typer(
     name="resume-ats",
-    help="Generate ATS-friendly resumes from YAML data with automated validation.",
+    help="Professional resume builder with ATS optimization",
     rich_markup_mode="rich",
 )
 console = Console()
 
 
-def version_callback(value: bool):
+def version_callback(value: bool) -> None:
     """Show version and exit."""
     if value:
         console.print(f"resume-ats version {__version__}")
@@ -38,7 +38,7 @@ def main(
         callback=version_callback,
         help="Show version and exit.",
     ),
-):
+) -> None:
     """Resume ATS - Generate professional, ATS-friendly resumes."""
     pass
 
@@ -64,7 +64,7 @@ def build(
     template_dir: Path = typer.Option(
         Path("templates"), "--templates", "-t", help="Template directory path."
     ),
-):
+) -> None:
     """Build resume in specified formats."""
     try:
         config = BuildConfig(
@@ -103,7 +103,7 @@ def extract(
     output_format: str = typer.Option(
         "table", "--format", "-f", help="Output format: table, json, yaml."
     ),
-):
+) -> None:
     """Extract data from generated PDF for ATS validation."""
     try:
         extractor = CVExtractor(pdf_file)
@@ -162,7 +162,7 @@ def validate(
         file_okay=True,
         dir_okay=False,
     ),
-):
+) -> None:
     """Validate generated PDF against source YAML data."""
     try:
         import yaml
@@ -293,7 +293,7 @@ def setup(
     force: bool = typer.Option(
         False, "--force", help="Force re-download of dependencies."
     ),
-):
+) -> None:
     """Setup ATS dependencies (NLTK data, spaCy models)."""
     try:
         console.print("🔧 Setting up ATS dependencies...")

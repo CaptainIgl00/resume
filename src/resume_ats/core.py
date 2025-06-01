@@ -4,7 +4,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Any, Dict, Match, Optional, Union
 
 import yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -15,7 +15,7 @@ from .exceptions import BuildError, CompilationError, TemplateError
 from .models import BuildConfig, ResumeData
 
 
-def process_bold_markdown(text: str) -> str:
+def process_bold_markdown(text: Union[str, Any]) -> Union[str, Any]:
     """Convert **text** markdown to LaTeX bold format and escape special chars.
 
     Args:
@@ -42,7 +42,7 @@ def process_bold_markdown(text: str) -> str:
     return re.sub(r"\*\*(.*?)\*\*", r"\\textbf{\1}", text)
 
 
-def process_links(text: str) -> str:
+def process_links(text: Union[str, Any]) -> Union[str, Any]:
     r"""Convert URLs to clickable LaTeX href links.
 
     Args:
@@ -57,7 +57,7 @@ def process_links(text: str) -> str:
     # Pattern to match http:// and https:// URLs
     url_pattern = r"(https?://[^\s]+)"
 
-    def make_link(match):
+    def make_link(match: Match[str]) -> str:
         url = match.group(1)
         # Remove trailing punctuation that might not be part of the URL
         if url.endswith((".", ",", ")", "]", "}", "!")):
@@ -67,7 +67,7 @@ def process_links(text: str) -> str:
     return re.sub(url_pattern, make_link, text)
 
 
-def process_bold_and_links(text: str) -> str:
+def process_bold_and_links(text: Union[str, Any]) -> Union[str, Any]:
     """Apply both bold markdown and link processing.
 
     Args:
@@ -82,7 +82,7 @@ def process_bold_and_links(text: str) -> str:
     # First, convert URLs to \href{}{} (before escaping special chars)
     url_pattern = r"(https?://[^\s]+)"
 
-    def make_link(match):
+    def make_link(match: Match[str]) -> str:
         url = match.group(1)
         # Remove trailing punctuation that might not be part of the URL
         if url.endswith((".", ",", ")", "]", "}", "!")):
@@ -127,7 +127,7 @@ def process_bold_and_links(text: str) -> str:
 class ResumeBuilder:
     """Main resume builder class."""
 
-    def __init__(self, config: Optional[BuildConfig] = None):
+    def __init__(self, config: Optional[BuildConfig] = None) -> None:
         """Initialize the resume builder.
 
         Args:
@@ -212,7 +212,7 @@ class ResumeBuilder:
                 shutil.rmtree(build_logos_dir)
             shutil.copytree(logos_dir, build_logos_dir)
 
-    def render_template(self, template_name: str, **extra_context) -> str:
+    def render_template(self, template_name: str, **extra_context: Any) -> str:
         """Render template with resume data.
 
         Args:
