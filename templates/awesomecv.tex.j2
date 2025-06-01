@@ -56,6 +56,7 @@
 \definecolor{textmedium}{HTML}{555555}      % Medium gray for dates/locations (O3 recommendation)
 \definecolor{sidebardark}{HTML}{333333}     % Dark sidebar text
 \definecolor{sidebarbackground}{HTML}{F0F4FF} % Very light blue background for sidebar
+\definecolor{sidebarframe}{HTML}{E8F1FF}    % Light blue frame for sidebar
 \definecolor{linkcolor}{HTML}{1E4E8C}       % Blue color for links
 
 % Set awesome-cv colors
@@ -123,12 +124,15 @@
 % Two-column layout - optimized spacing with better contrast
 \noindent%
 \begin{minipage}[t]{0.28\textwidth}
-% LEFT SIDEBAR - O3 Enhanced with visual differentiation (subtle approach)
+% LEFT SIDEBAR - O3 Enhanced with visual differentiation (improved background)
 \vspace{0.5mm}
 
-% Add subtle visual differentiation with rules
-{\color{sidebarbackground}\rule{\linewidth}{0.5pt}}
-\vspace{0.2mm}
+{% raw %}
+% Create a more visible background using fcolorbox
+\fcolorbox{sidebarframe}{sidebarbackground}{%
+\begin{minipage}[t]{0.95\linewidth}
+\vspace{1mm}
+{% endraw %}
 
 {\color{accent}\rule{\linewidth}{1.5pt}}
 {\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{3pt} Skills}
@@ -168,9 +172,11 @@
 \end{itemize}
 {%- endif %}
 
-% Bottom visual differentiation  
-\vspace{0.2mm}
-{\color{sidebarbackground}\rule{\linewidth}{0.5pt}}
+{% raw %}
+\vspace{1mm}
+\end{minipage}%
+}
+{% endraw %}
 
 \end{minipage}%
 \hfill%

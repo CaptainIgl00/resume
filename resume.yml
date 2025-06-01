@@ -34,7 +34,7 @@ work:
     startDate: "Jan 2025"
     endDate: "Present"
     highlights:
-      - "Built **brasseriechezju.com** from scratch → **2h delivery time** via **GitHub Actions**, achieving **98% Lighthouse score** (**Nuxt.js + TypeScript + Vue.js**)"
+      - "Built https://brasseriechezju.com from scratch → **2h delivery time** via **GitHub Actions**, achieving **98% Lighthouse score** (**Nuxt.js + TypeScript + Vue.js**)"
       - "Architected **FastAPI + SQLAlchemy** backend with **PostgreSQL** → **<200ms API response** time, deployed on **OVH VPS** with **automated SSL renewal**"
 
   - company: "Continental"
