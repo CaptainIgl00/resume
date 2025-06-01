@@ -1,20 +1,21 @@
 """Data models for resume generation and validation."""
 
-from datetime import date
-from typing import List, Optional, Dict, Any, Union
 from pathlib import Path
+from typing import List, Optional, Union
 
-from pydantic import BaseModel, validator, ConfigDict
+from pydantic import BaseModel, ConfigDict
 
 
 class Location(BaseModel):
     """Location model."""
+
     city: Optional[str] = None
     countryCode: Optional[str] = None
 
 
 class Profile(BaseModel):
     """Social profile model."""
+
     network: str
     username: str
     url: str
@@ -22,6 +23,7 @@ class Profile(BaseModel):
 
 class ContactInfo(BaseModel):
     """Contact information model."""
+
     name: str
     email: str
     label: Optional[str] = None
@@ -32,6 +34,7 @@ class ContactInfo(BaseModel):
 
 class WorkExperience(BaseModel):
     """Work experience model."""
+
     company: str
     position: str
     location: Optional[str] = None
@@ -43,6 +46,7 @@ class WorkExperience(BaseModel):
 
 class Education(BaseModel):
     """Education model."""
+
     institution: str
     area: str
     studyType: str
@@ -54,6 +58,7 @@ class Education(BaseModel):
 
 class Project(BaseModel):
     """Project model."""
+
     name: str
     description: str
     highlights: List[str] = []
@@ -65,24 +70,28 @@ class Project(BaseModel):
 
 class Skill(BaseModel):
     """Skill category model."""
+
     name: str
     keywords: List[str] = []
 
 
 class Language(BaseModel):
     """Language proficiency model."""
+
     language: str
     fluency: str
 
 
 class Reference(BaseModel):
     """Reference model."""
+
     name: str
     reference: str  # Email or contact info
 
 
 class ResumeData(BaseModel):
     """Complete resume data model."""
+
     basics: ContactInfo
     work: List[WorkExperience] = []
     education: List[Education] = []
@@ -95,6 +104,7 @@ class ResumeData(BaseModel):
 
 class CVData(BaseModel):
     """Extracted CV data for ATS validation."""
+
     name: str
     email: str
     position: str
@@ -105,9 +115,10 @@ class CVData(BaseModel):
 
 class BuildConfig(BaseModel):
     """Build configuration model."""
+
     model_config = ConfigDict(arbitrary_types_allowed=True)  # Updated config
-    
+
     template_dir: Path = Path("templates")
-    output_dir: Path = Path("build") 
+    output_dir: Path = Path("build")
     clean_build: bool = True
-    formats: List[str] = ["pdf"] 
+    formats: List[str] = ["pdf"]

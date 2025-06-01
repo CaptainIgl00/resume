@@ -9,12 +9,12 @@ __author__ = "Mathéo Guilloux"
 __email__ = "matheo.guilloux@gmail.com"
 
 from .core import ResumeBuilder
-from .extractors import CVExtractor  
-from .models import ResumeData, CVData
+from .extractors import CVExtractor
+from .models import CVData, ResumeData
 
 __all__ = [
     "ResumeBuilder",
-    "CVExtractor", 
+    "CVExtractor",
     "ResumeData",
     "CVData",
-] 
+]
