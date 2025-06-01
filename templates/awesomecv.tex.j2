@@ -92,8 +92,11 @@
 %-------------------------------------------------------------------------------
 \name{ {{- basics.name.split(' ')[0] -}} }{ {{- ' '.join(basics.name.split(' ')[1:]) -}} }
 \position{ {{- basics.label | bold -}} }
-\address{ {{- basics.location.city -}}, {{- basics.location.countryCode -}} }
+\address{ {{- basics.location.city -}} }
 \email{ {{- basics.email -}} }
+{%- if basics.phone %}
+\mobile{ {{- basics.phone -}} }
+{%- endif %}
 
 {% for p in basics.profiles or [] -%}
 {%- if p.network == "GitHub" -%}
@@ -236,7 +239,7 @@
 \end{cventries}
 {%- endif %}
 
-% Education - O3 Enhanced colors with conservative sizing
+% Education - Improved structure for better ATS parsing
 \vspace{0.6mm}
 {\color{accent}\rule{\linewidth}{2pt}}
 {\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Education}
@@ -247,9 +250,13 @@
 \cventry
 { {\color{textdark}\small {{ edu.studyType | bold }}} }
 { {\color{elegantblack}\small {% if edu.institution == "INP ENSEEIHT" -%}
-{{ edu.institution | bold }}~\logoenseeiht
+\begin{tabular*}{\linewidth}{@{}p{0.55\linewidth}@{\extracolsep{\fill}}r@{}}
+{{ edu.institution | bold }}~\logoenseeiht &
+\end{tabular*}
 {%- else -%}
-{{ edu.institution | bold }}
+\begin{tabular*}{\linewidth}{@{}p{0.55\linewidth}@{\extracolsep{\fill}}r@{}}
+{{ edu.institution | bold }} &
+\end{tabular*}
 {%- endif %}} }
 { {\color{textmedium}\footnotesize {{ edu.location | bold }}} }
 { {\color{textmedium}\footnotesize {{ edu.startDate | replace('-', '/') }} -- {{ edu.endDate | replace('-', '/') }}} }
