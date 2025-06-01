@@ -16,7 +16,8 @@ basics:
       url: "https://www.linkedin.com/in/matheo-guilloux/"
 
 work:
-  - company: "Airbus Defence and Space (Neverhack)"
+  - company: "Airbus Defence and Space"
+    client: "Neverhack"
     position: "DevOps Engineer"
     location: "Toulouse, France"
     startDate: "Nov 2023"

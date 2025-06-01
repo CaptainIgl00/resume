@@ -65,10 +65,10 @@
 % Set hyperlink colors
 \hypersetup{
     colorlinks=true,
-    linkcolor=linkcolor,
-    urlcolor=linkcolor,
-    filecolor=linkcolor,
-    citecolor=linkcolor
+    linkcolor=accent,
+    urlcolor=accent,
+    filecolor=accent,
+    citecolor=accent
 }
 
 %-------------------------------------------------------------------------------
@@ -118,6 +118,7 @@
 \vspace{0.6mm}
 
 {\color{textdark}{{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
+{\color{accent}\rule{\linewidth}{0.6pt}}
 
 \vspace{1mm}
 
@@ -130,7 +131,7 @@
 {% raw %}
 % Create a more visible background using fcolorbox
 \fcolorbox{sidebarframe}{sidebarbackground}{%
-\begin{minipage}[t]{0.95\linewidth}
+\begin{minipage}[t]{0.9\linewidth}
 \vspace{1mm}
 {% endraw %}
 
@@ -138,7 +139,7 @@
 {\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{3pt} Skills}
 \vspace{0.6mm}
 
-\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.4mm]
 {%- for skill in skills %}
 \item {\color{accent}\textbf{\small {{ skill.name | bold }}} } 
 
@@ -151,7 +152,7 @@
 {\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{3pt} Languages}
 \vspace{0.6mm}
 
-\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.4mm]
 {%- for lang in languages %}
 \item {\color{accent}\textbf{\small {{ lang.language | bold }}} } — {\color{textdark}\small {{ lang.fluency | bold }}}
 {%- endfor %}
@@ -163,7 +164,7 @@
 {\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{3pt} References}
 \vspace{0.6mm}
 
-\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.4mm]
 {%- for ref in references %}
 \item {\color{accent}\textbf{\small {{ ref.name | bold }}} } 
 
@@ -193,8 +194,8 @@
 {%- for job in work %}
 \cventry
 { {\color{textdark}\small {{ job.position | bold }}} }
-{ {\color{elegantblack}\small {% if job.company == "Airbus Defence and Space (Neverhack)" -%}
-{{ job.company | bold }}~\logoads
+{ {\color{elegantblack}\small {% if job.company == "Airbus Defence and Space" -%}
+{{ job.company | bold }}{% if job.client %} ({{ job.client }}){% endif %}~\logoads
 {%- elif job.company == "Continental" -%}
 {{ job.company | bold }}~\logocontinental
 {%- else -%}
