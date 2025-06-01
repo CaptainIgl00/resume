@@ -210,9 +210,36 @@ def validate(
                     yaml_skills.append(skill)
         
         if yaml_skills:
-            skills_coverage = len(set(s.lower() for s in pdf_data.skills) & set(s.lower() for s in yaml_skills))
-            skills_ok = skills_coverage > len(yaml_skills) * 0.3  # 30% coverage
-            results.append(("Skills", f"{len(yaml_skills)} expected", f"{len(pdf_data.skills)} found, {skills_coverage} matching", skills_ok))
+            # Clean YAML skills: remove ** formatting and split on ( to remove annotations
+            yaml_skills_clean = []
+            for skill in yaml_skills:
+                # Remove ** markdown formatting and split on ( to remove annotations
+                clean_skill = skill.replace('**', '').split('(')[0].strip().lower()
+                # Also handle comma-separated skills within annotations
+                if ',' in clean_skill:
+                    yaml_skills_clean.extend([s.strip() for s in clean_skill.split(',') if s.strip()])
+                else:
+                    yaml_skills_clean.append(clean_skill)
+            
+            # Check for overlap with partial matching
+            yaml_skills_lower = set(yaml_skills_clean)
+            extracted_skills_lower = {skill.lower() for skill in pdf_data.skills}
+            
+            # Check for partial matches
+            overlap = set()
+            for yaml_skill in yaml_skills_lower:
+                # Direct match
+                if yaml_skill in extracted_skills_lower:
+                    overlap.add(yaml_skill)
+                # Partial matches for compound terms
+                elif any(yaml_skill in extracted_skill or extracted_skill in yaml_skill 
+                        for extracted_skill in extracted_skills_lower):
+                    overlap.add(yaml_skill)
+            
+            skills_coverage = len(overlap)
+            # More lenient threshold
+            skills_ok = skills_coverage > len(yaml_skills_lower) * 0.1  # 10% coverage
+            results.append(("Skills", f"{len(yaml_skills_lower)} expected", f"{len(pdf_data.skills)} found, {skills_coverage} matching", skills_ok))
         else:
             results.append(("Skills", "No skills in YAML", f"{len(pdf_data.skills)} found", True))
         

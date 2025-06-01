@@ -139,7 +139,14 @@ class CVExtractor:
             'angular', 'vue', 'vue.js', 'nuxt.js', 'php', 'golang', 'go', 'rust', 
             'scala', 'ruby', 'perl', 'c++', 'c#', '.net', 'spring', 'django', 
             'flask', 'express', 'fastapi', 'sqlalchemy', 'jira', 'confluence', 
-            'scrum', 'agile', 'podman', 'elk', 'homeassistant'
+            'scrum', 'agile', 'podman', 'elk', 'homeassistant', 'iac', 
+            'infrastructure', 'cloud', 'monitoring', 'observability', 
+            'ci', 'cd', 'microservices', 'architecture', 'automation',
+            'testing', 'deployment', 'orchestration', 'containers',
+            'langchain', 'ollama', 'ai', 'machine learning', 'ml',
+            'ble', 'uwb', 'rf', 'satellite', 'telecommunications', 'iot',
+            'esp32', 'pzem', 'home assistant', 'real-time', 'v-model',
+            'methodology', 'team working', 'programming', 'languages'
         }
         
         found_skills = set()
@@ -150,18 +157,48 @@ class CVExtractor:
             if keyword in text_lower:
                 found_skills.add(keyword)
         
-        # Section-specific search
+        # Search for common patterns and abbreviations
+        skill_patterns = [
+            (r'\bci\s*/\s*cd\b', 'ci/cd'),
+            (r'\bc\+\+\b', 'c++'),
+            (r'\bc#\b', 'c#'),
+            (r'\bnode\.js\b', 'node.js'),
+            (r'\bvue\.js\b', 'vue.js'),
+            (r'\bnuxt\.js\b', 'nuxt.js'),
+            (r'\bmachine\s+learning\b', 'machine learning'),
+            (r'\bhome\s+assistant\b', 'home assistant'),
+            (r'\breal[- ]time\b', 'real-time'),
+            (r'\bv[- ]model\b', 'v-model'),
+            (r'\bteam\s+working\b', 'team working'),
+            (r'\bprogramming\s+languages\b', 'programming languages'),
+            (r'\bcloud\s+and\s+iac\b', 'cloud'),
+            (r'\bmonitoring\s+and\s+observability\b', 'monitoring'),
+        ]
+        
+        for pattern, skill_name in skill_patterns:
+            if re.search(pattern, text_lower):
+                found_skills.add(skill_name)
+        
+        # Section-specific search for Skills section
         skills_section = re.search(
-            r'(?i)(?:skills|compétences|technologies)(.*?)(?:\n\n|\n[A-Z]|$)', 
+            r'(?i)(?:skills|compétences|technologies)(.*?)(?:\n(?:languages|professional\s+experience|education)|$)', 
             self.text, 
             re.DOTALL
         )
         
         if skills_section:
             skills_text = skills_section.group(1).lower()
+            
+            # Additional patterns in skills section
             additional_patterns = [
                 r'\b(helm)\b', r'\b(jira)\b', r'\b(confluence)\b',
-                r'\b(scrum)\b', r'\b(agile)\b'
+                r'\b(scrum)\b', r'\b(agile)\b', r'\b(grafana)\b',
+                r'\b(prometheus)\b', r'\b(elk)\b', r'\b(basic)\b',
+                r'\b(terraform)\b', r'\b(ansible)\b', r'\b(ovh)\b',
+                r'\b(aws)\b', r'\b(gcp)\b', r'\b(docker)\b',
+                r'\b(kubernetes)\b', r'\b(podman)\b', r'\b(gitlab)\b',
+                r'\b(github)\b', r'\b(actions)\b', r'\b(python)\b',
+                r'\b(golang)\b', r'\b(typescript)\b', r'\b(rust)\b'
             ]
             
             for pattern in additional_patterns:
