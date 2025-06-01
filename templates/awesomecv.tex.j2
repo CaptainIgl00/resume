@@ -37,30 +37,41 @@
 {% endraw %}
 
 %-------------------------------------------------------------------------------
-%                Elegant Blue/Black/Purple Theme - Refined with Better Contrast
+%                Elegant Blue Theme - O3 Enhanced with Better Contrast
 %-------------------------------------------------------------------------------
-\definecolor{deepblue}{HTML}{1A237E}        % Deep blue primary
+\definecolor{accent}{HTML}{1E4E8C}          % Deep blue accent (O3 recommendation)
+\definecolor{accentlight}{HTML}{4A90E2}     % Light blue for links/icons (O3 recommendation)
 \definecolor{elegantblack}{HTML}{2C2C2C}    % Elegant black
-\definecolor{modernpurple}{HTML}{673AB7}    % Modern purple
-\definecolor{lightpurple}{HTML}{9C27B0}     % Light purple accent
 \definecolor{textdark}{HTML}{263238}        % Dark text
-\definecolor{textlight}{HTML}{757575}       % Light text
-\definecolor{sidebarlight}{HTML}{F8F9FA}    % Very light sidebar background
+\definecolor{textmedium}{HTML}{555555}      % Medium gray for dates/locations (O3 recommendation)
 \definecolor{sidebardark}{HTML}{333333}     % Dark sidebar text
+\definecolor{sidebarbackground}{HTML}{F0F4FF} % Very light blue background for sidebar
+\definecolor{linkcolor}{HTML}{1E4E8C}       % Blue color for links
 
 % Set awesome-cv colors
-\colorlet{awesome}{deepblue}
+\colorlet{awesome}{accent}
+
+% Set hyperlink colors
+\hypersetup{
+    colorlinks=true,
+    linkcolor=linkcolor,
+    urlcolor=linkcolor,
+    filecolor=linkcolor,
+    citecolor=linkcolor
+}
 
 %-------------------------------------------------------------------------------
-%                Compact Page Layout
+%                Compact Page Layout with O3 Typography Improvements
 %-------------------------------------------------------------------------------
 \geometry{left=0.8cm, right=0.8cm, top=0.6cm, bottom=0.6cm, footskip=0.2cm}
+
+% O3 Typography: Compact spacing for single page
+\setlength{\parskip}{0.03em}
+\setlength{\itemsep}{0.05em}
 
 % Very compact spacing adjustments
 \renewcommand{\acvSectionTopSkip}{0.8mm}
 \renewcommand{\acvSectionContentTopSkip}{0.6mm}
-\setlength{\parskip}{0.03em}
-\setlength{\itemsep}{0.05em}
 
 % Header separator
 \renewcommand{\acvHeaderSocialSep}{\enspace|\enspace}
@@ -88,106 +99,93 @@
 \makecvheader[C]
 
 % Clear separation between header and professional summary
-\vspace{2mm}
+\vspace{0.5mm}
 
-% Professional Summary - separated with frame for ATS clarity
-{% raw %}
-\begin{center}
-\fcolorbox{deepblue}{white}{%
-\begin{minipage}{0.95\textwidth}
+% Professional Summary - O3 Enhanced with better contrast but conservative sizing
+{\color{accent}\rule{\linewidth}{2pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Professional Summary}
+\vspace{0.6mm}
+
+{\color{textdark}{{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
+
 \vspace{1mm}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue}\centering Professional Summary}
-\vspace{1mm}
-{% endraw %}
-
-{\color{textdark}\centering {{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
-
-{% raw %}
-\vspace{1mm}
-\end{minipage}%
-}
-\end{center}
-{% endraw %}
-
-\vspace{2mm}
 
 % Two-column layout - optimized spacing with better contrast
 \noindent%
 \begin{minipage}[t]{0.28\textwidth}
-% LEFT SIDEBAR - improved contrast with light background
-{% raw %}
-\colorbox{sidebarlight}{%
-\begin{minipage}{\textwidth}
-\vspace{2mm}
-{% endraw %}
+% LEFT SIDEBAR - O3 Enhanced with visual differentiation (subtle approach)
+\vspace{0.5mm}
 
-{\color{modernpurple}\rule{\linewidth}{1.5pt}}
-{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Skills}
-\vspace{0.8mm}
+% Add subtle visual differentiation with rules
+{\color{sidebarbackground}\rule{\linewidth}{0.5pt}}
+\vspace{0.2mm}
+
+{\color{accent}\rule{\linewidth}{1.5pt}}
+{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{3pt} Skills}
+\vspace{0.6mm}
 
 \begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
 {%- for skill in skills %}
-\item {\color{sidebardark}\textbf{\scriptsize {{ skill.name | bold }}} } 
+\item {\color{accent}\textbf{\small {{ skill.name | bold }}} } 
 
-{\color{sidebardark}\tiny {{ skill.keywords | join(', ') | bold }}}
+{\color{textdark}\scriptsize {{ skill.keywords | join(', ') | bold }}}
 {%- endfor %}
 \end{itemize}
 
-\vspace{1.5mm}
-{\color{modernpurple}\rule{\linewidth}{1.5pt}}
-{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Languages}
-\vspace{0.8mm}
+\vspace{1.2mm}
+{\color{accent}\rule{\linewidth}{1.5pt}}
+{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{3pt} Languages}
+\vspace{0.6mm}
 
 \begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
 {%- for lang in languages %}
-\item {\color{sidebardark}\textbf{\scriptsize {{ lang.language | bold }}} } — {\color{sidebardark}\scriptsize {{ lang.fluency | bold }}}
+\item {\color{accent}\textbf{\small {{ lang.language | bold }}} } — {\color{textdark}\small {{ lang.fluency | bold }}}
 {%- endfor %}
 \end{itemize}
 
 {%- if references %}
-\vspace{1.5mm}
-{\color{modernpurple}\rule{\linewidth}{1.5pt}}
-{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} References}
-\vspace{0.8mm}
+\vspace{1.2mm}
+{\color{accent}\rule{\linewidth}{1.5pt}}
+{\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{3pt} References}
+\vspace{0.6mm}
 
-\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.8mm]
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
 {%- for ref in references %}
-\item {\color{sidebardark}\textbf{\scriptsize {{ ref.name | bold }}} } 
+\item {\color{accent}\textbf{\small {{ ref.name | bold }}} } 
 
-{\color{sidebardark}\tiny {{ ref.reference | bold }}}
+{\color{textdark}\scriptsize {{ ref.reference | bold }}}
 {%- endfor %}
 \end{itemize}
 {%- endif %}
 
-{% raw %}
-\vspace{2mm}
-\end{minipage}%
-}
-{% endraw %}
+% Bottom visual differentiation  
+\vspace{0.2mm}
+{\color{sidebarbackground}\rule{\linewidth}{0.5pt}}
+
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.69\textwidth}
 % RIGHT COLUMN - compact professional content
 
-% Professional Experience - streamlined
-\vspace{0.5mm}
-{\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Experience}
-\vspace{0.8mm}
+% Professional Experience - O3 Enhanced colors with conservative sizing
+\vspace{0.3mm}
+{\color{accent}\rule{\linewidth}{2pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Professional Experience}
+\vspace{0.6mm}
 
 \begin{cventries}
 {%- for job in work %}
 \cventry
 { {\color{textdark}\small {{ job.position | bold }}} }
-{ {\color{elegantblack}\small {% if job.company == "Neverhack (mission Airbus Defence and Space)" -%}
+{ {\color{elegantblack}\small {% if job.company == "Airbus Defence and Space (Neverhack)" -%}
 {{ job.company | bold }}~\logoads
 {%- elif job.company == "Continental" -%}
 {{ job.company | bold }}~\logocontinental
 {%- else -%}
 {{ job.company | bold }}
 {%- endif %}} }
-{ {\color{textlight}\footnotesize {{ job.location | bold }}} }
-{ {\color{textlight}\footnotesize {{ job.startDate | replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }}} }
+{ {\color{textmedium}\footnotesize {{ job.location | bold }}} }
+{ {\color{textmedium}\footnotesize {{ job.startDate | replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }}} }
 {
 \begin{cvitems}
 {%- for bullet in job.highlights %}
@@ -199,16 +197,16 @@
 \end{cventries}
 
 {%- if projects %}
-% Key Projects - compact
-\vspace{0.8mm}
-{\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Key Projects}
-\vspace{0.8mm}
+% Key Projects - O3 Enhanced colors with conservative sizing
+\vspace{0.6mm}
+{\color{accent}\rule{\linewidth}{2pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Key Projects}
+\vspace{0.6mm}
 
 \begin{cventries}
 {%- for project in projects %}
 \cventry
-{ {\color{modernpurple}\small {{ project.name | bold }}} }
+{ {\color{accentlight}\small {{ project.name | bold }}} }
 { }
 { }
 { }
@@ -221,11 +219,11 @@
 \end{cventries}
 {%- endif %}
 
-% Education - streamlined
-\vspace{0.8mm}
-{\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Education}
-\vspace{0.8mm}
+% Education - O3 Enhanced colors with conservative sizing
+\vspace{0.6mm}
+{\color{accent}\rule{\linewidth}{2pt}}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Education}
+\vspace{0.6mm}
 
 \begin{cventries}
 {%- for edu in education %}
@@ -236,14 +234,14 @@
 {%- else -%}
 {{ edu.institution | bold }}
 {%- endif %}} }
-{ {\color{textlight}\footnotesize {{ edu.location | bold }}} }
-{ {\color{textlight}\footnotesize {{ edu.startDate | replace('-', '/') }} -- {{ edu.endDate | replace('-', '/') }}} }
+{ {\color{textmedium}\footnotesize {{ edu.location | bold }}} }
+{ {\color{textmedium}\footnotesize {{ edu.startDate | replace('-', '/') }} -- {{ edu.endDate | replace('-', '/') }}} }
 {
 {%- if edu.area %}
 \begin{cvitems}
 \item {\color{textdark}\footnotesize Specialization: {{ edu.area | bold }}}
 {%- if edu.notes %}
-\item {\color{modernpurple}\footnotesize {{ edu.notes | bold }}}
+\item {\color{accentlight}\footnotesize {{ edu.notes | bold }}}
 {%- endif %}
 \end{cvitems}
 {%- endif %}
