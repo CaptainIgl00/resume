@@ -54,6 +54,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e ".[test,ats]"
         
+    - name: 🔧 Setup ATS dependencies
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      run: |
+        python -m resume_ats.cli setup
+        
+    - name: 🏗️ Build PDF for tests
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+      run: |
+        python -m resume_ats.cli build
+        
     - name: 🧪 Run unit tests
       run: |
         pytest tests/test_modern_ats.py::TestResumeBuilder -v
@@ -66,7 +76,6 @@ jobs:
     - name: 📊 Generate coverage report
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       run: |
-        python -m resume_ats.cli setup
         pytest tests/test_modern_ats.py --cov=src/resume_ats --cov-report=xml --cov-report=html
         
     - name: 📈 Upload coverage reports
@@ -76,11 +85,9 @@ jobs:
         file: ./coverage.xml
         fail_ci_if_error: false
         
-    - name: 🏗️ Test build (full test)
+    - name: 🧪 Test PDF extraction
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       run: |
-        python -m resume_ats.cli setup
-        python -m resume_ats.cli build
         python -m resume_ats.cli extract build/Mathéo_Guilloux_CV.pdf --format table
         
   quality:
