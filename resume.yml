@@ -1,6 +1,6 @@
 basics:
   name: "Mathéo Guilloux"
-  label: "devops engineer"
+  label: "DevOps Engineer"
   email: "matheo.guilloux@gmail.com"
   phone: "+33 6 XX XX XX XX"
   location:
@@ -13,7 +13,7 @@ basics:
       username: "CaptainIgl00"
       url: "https://github.com/CaptainIgl00"
     - network: "LinkedIn"
-      username: "mathéo-guilloux"
+      username: "matheo-guilloux"
       url: "https://www.linkedin.com/in/matheo-guilloux/"
 
 work:

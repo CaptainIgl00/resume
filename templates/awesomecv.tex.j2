@@ -91,7 +91,6 @@
 %                Personal Information with Icons
 %-------------------------------------------------------------------------------
 \name{ {{- basics.name.split(' ')[0] -}} }{ {{- ' '.join(basics.name.split(' ')[1:]) -}} }
-\position{ {{- basics.label | bold -}} }
 \address{ {{- basics.location.city -}} }
 \email{ {{- basics.email -}} }
 {%- if basics.phone %}
@@ -120,7 +119,7 @@
 {\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Professional Summary}
 \vspace{0.4mm}
 
-{\color{textdark}{{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
+{\color{textdark}\textbf{ {{- basics.label | title -}} } — {{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
 {\color{accent}\rule{\linewidth}{0.6pt}}
 
 \vspace{0.8mm}
