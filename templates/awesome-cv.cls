@@ -245,19 +245,19 @@
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{mailto:\@email}{\@email}%
+          \ifthenelse{\isundefined{\emailicon}}{}{\raisebox{0.2ex}{\emailicon}~}\href{mailto:\@email}{\@email}%
         }%
       \ifthenelse{\isundefined{\@github}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://github.com/\@github}{github.com/\@github}%
+          \ifthenelse{\isundefined{\githubicon}}{}{\raisebox{0.1ex}{\githubicon}~}\href{https://github.com/\@github}{github.com/\@github}%
         }%
       \ifthenelse{\isundefined{\@linkedin}}%
         {}%
         {%
           \ifbool{isstart}{\setbool{isstart}{false}}{\acvHeaderSocialSep}%
-          \href{https://linkedin.com/in/\@linkedin}{linkedin.com/in/\@linkedin}%
+          \ifthenelse{\isundefined{\linkedinicon}}{}{\raisebox{0.2ex}{\linkedinicon}~}\href{https://linkedin.com/in/\@linkedin}{linkedin.com/in/\@linkedin}%
         }%
       \ifthenelse{\isundefined{\@extrainfo}}%
         {}%
