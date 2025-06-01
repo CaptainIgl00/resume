@@ -37,7 +37,7 @@
 {% endraw %}
 
 %-------------------------------------------------------------------------------
-%                Elegant Blue/Black/Purple Theme - Refined
+%                Elegant Blue/Black/Purple Theme - Refined with Better Contrast
 %-------------------------------------------------------------------------------
 \definecolor{deepblue}{HTML}{1A237E}        % Deep blue primary
 \definecolor{elegantblack}{HTML}{2C2C2C}    % Elegant black
@@ -45,6 +45,8 @@
 \definecolor{lightpurple}{HTML}{9C27B0}     % Light purple accent
 \definecolor{textdark}{HTML}{263238}        % Dark text
 \definecolor{textlight}{HTML}{757575}       % Light text
+\definecolor{sidebarlight}{HTML}{F8F9FA}    % Very light sidebar background
+\definecolor{sidebardark}{HTML}{333333}     % Dark sidebar text
 
 % Set awesome-cv colors
 \colorlet{awesome}{deepblue}
@@ -85,20 +87,39 @@
 % Compact elegant header
 \makecvheader[C]
 
-% Professional Summary - compact and elegant
-\vspace{0.5mm}
-{\color{deepblue}\rule{\linewidth}{2pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue} \hspace{4pt} Professional Summary}
-\vspace{0.8mm}
+% Clear separation between header and professional summary
+\vspace{2mm}
 
-{\color{textdark}{{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
+% Professional Summary - separated with frame for ATS clarity
+{% raw %}
+\begin{center}
+\fcolorbox{deepblue}{white}{%
+\begin{minipage}{0.95\textwidth}
+\vspace{1mm}
+{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{deepblue}\centering Professional Summary}
+\vspace{1mm}
+{% endraw %}
 
-\vspace{1.5mm}
+{\color{textdark}\centering {{ basics.summary | bold_and_links | replace('\n', ' ') | trim }}}
 
-% Two-column layout - optimized spacing
+{% raw %}
+\vspace{1mm}
+\end{minipage}%
+}
+\end{center}
+{% endraw %}
+
+\vspace{2mm}
+
+% Two-column layout - optimized spacing with better contrast
 \noindent%
 \begin{minipage}[t]{0.28\textwidth}
-% LEFT SIDEBAR - compact and elegant
+% LEFT SIDEBAR - improved contrast with light background
+{% raw %}
+\colorbox{sidebarlight}{%
+\begin{minipage}{\textwidth}
+\vspace{2mm}
+{% endraw %}
 
 {\color{modernpurple}\rule{\linewidth}{1.5pt}}
 {\fontsize{10pt}{1.1em}\bodyfont\bfseries\color{modernpurple} \hspace{3pt} Skills}
@@ -106,9 +127,9 @@
 
 \begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
 {%- for skill in skills %}
-\item {\color{elegantblack}\textbf{\scriptsize {{ skill.name | bold }}} } 
+\item {\color{sidebardark}\textbf{\scriptsize {{ skill.name | bold }}} } 
 
-{\color{textdark}\tiny {{ skill.keywords | join(', ') | bold }}}
+{\color{sidebardark}\tiny {{ skill.keywords | join(', ') | bold }}}
 {%- endfor %}
 \end{itemize}
 
@@ -119,7 +140,7 @@
 
 \begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.6mm]
 {%- for lang in languages %}
-\item {\color{elegantblack}\textbf{\scriptsize {{ lang.language | bold }}} } — {\color{textdark}\scriptsize {{ lang.fluency | bold }}}
+\item {\color{sidebardark}\textbf{\scriptsize {{ lang.language | bold }}} } — {\color{sidebardark}\scriptsize {{ lang.fluency | bold }}}
 {%- endfor %}
 \end{itemize}
 
@@ -131,13 +152,18 @@
 
 \begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.8mm]
 {%- for ref in references %}
-\item {\color{elegantblack}\textbf{\scriptsize {{ ref.name | bold }}} } 
+\item {\color{sidebardark}\textbf{\scriptsize {{ ref.name | bold }}} } 
 
-{\color{textlight}\tiny {{ ref.reference | bold }}}
+{\color{sidebardark}\tiny {{ ref.reference | bold }}}
 {%- endfor %}
 \end{itemize}
 {%- endif %}
 
+{% raw %}
+\vspace{2mm}
+\end{minipage}%
+}
+{% endraw %}
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.69\textwidth}
