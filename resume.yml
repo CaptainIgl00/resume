@@ -77,7 +77,7 @@ skills:
   - name: "CI/CD & Orchestration"
     keywords: ["GitLab CI", "GitHub Actions", "Kubernetes", "Docker", "Podman", "Helm"]
   - name: "Programming"
-    keywords: ["Python", "Go", "Java", "JavaScript/TypeScript", "C++", "Rust"]
+    keywords: ["Python", "Go", "Java", "TypeScript", "C++", "Rust"]
   - name: "Monitoring"
     keywords: ["Grafana", "Prometheus", "ELK"]
   - name: "Methodology"
