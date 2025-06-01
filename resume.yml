@@ -1,9 +1,10 @@
 basics:
   name: "Mathéo Guilloux"
-  label: "DevOps Engineer"
+  label: "devops engineer"
   email: "matheo.guilloux@gmail.com"
+  phone: "+33 6 XX XX XX XX"
   location:
-    city: "Toulouse"
+    city: "Toulouse, FR"
     countryCode: "FR"
   summary: |
     DevOps engineer with **3 years' experience** helping companies automate and deploy cloud infrastructure. Available from **23 July** — see https://matheo.guilloux.ovh.
