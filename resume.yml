@@ -80,6 +80,8 @@ skills:
     keywords: ["Python", "Go", "Java", "TypeScript", "C++", "Rust"]
   - name: "Monitoring"
     keywords: ["Grafana", "Prometheus", "ELK"]
+  - name: "Hyperviseur"
+    keywords: ["Nutanix"]
   - name: "Methodology"
     keywords: ["Agile", "Scrum", "Jira", "Confluence", "V-Model"]
 
