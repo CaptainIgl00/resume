@@ -73,15 +73,19 @@ projects:
 
 skills:
   - name: "Cloud & IaC"
-    keywords: ["Terraform", "Ansible", "OVH", "AWS (basic)", "GCP (basic)"]
+    keywords: ["Terraform", "Ansible", "OVH", "AWS (basic)", "GCP (basic)", "Azure (basic)"]
   - name: "CI/CD & Orchestration"
     keywords: ["GitLab CI", "GitHub Actions", "Kubernetes", "Docker", "Podman", "Helm"]
   - name: "Programming"
     keywords: ["Python", "Go", "Java", "TypeScript", "C++", "Rust"]
   - name: "Monitoring"
     keywords: ["Grafana", "Prometheus", "ELK"]
-  - name: "Hyperviseur"
-    keywords: ["Nutanix"]
+  - name: "Databases"
+    keywords: ["PostgreSQL", "Elasticsearch", "MongoDB", "Redis", "InfluxDB"]
+  - name: "Hypervisor"
+    keywords: ["Nutanix", "VirtualBox", "QEMU"]
+  - name: "AI"
+    keywords: ["LangChain", "Gemini 2.5 pro", "GPT-o3", "Claude Sonnet 4", "Cursor"]
   - name: "Methodology"
     keywords: ["Agile", "Scrum", "Jira", "Confluence", "V-Model"]
 
