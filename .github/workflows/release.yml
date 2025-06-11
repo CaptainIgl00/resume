@@ -98,7 +98,7 @@ jobs:
         cd ..
         
     - name: 🚀 Create GitHub Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v2.3.2
       with:
         name: Resume ${{ steps.get_version.outputs.VERSION }}
         body_path: release-notes.md
