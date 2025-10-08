@@ -29,12 +29,13 @@
 {% raw %}
 % Company logos
 \newcommand{\companylogo}[1]{%
-  \raisebox{-0.1em}{\includegraphics[height=0.8em]{logos/#1}}%
+  \raisebox{-0.15em}{\includegraphics[height=1.4em]{logos/#1}}%
 }
 
 \newcommand{\logoads}{\companylogo{ads.png}}
 \newcommand{\logocontinental}{\companylogo{continental.png}}
 \newcommand{\logoenseeiht}{\companylogo{enseeiht.png}}
+\newcommand{\logomarlink}{\companylogo{marlink.png}}
 
 % Contact icons - smaller for header use
 \newcommand{\contacticon}[1]{%
@@ -196,15 +197,13 @@
 {%- for job in work %}
 \cventry
 { {\color{textdark}\small {{ job.position | bold }}} }
-{ {\color{elegantblack}\small {% if job.company == "Airbus Defence and Space" -%}
-{{ job.company | bold }}{% if job.client %} ({{ job.client }}){% endif %}~\logoads
-{%- elif job.company == "Continental" -%}
-{{ job.company | bold }}~\logocontinental
+{ {\color{elegantblack}\small {% if job.logo -%}
+\raisebox{-0.25em}{\includegraphics[height={{ job.logo_size | default('1.8em') }}]{logos/{{ job.logo }}}}
 {%- else -%}
 {{ job.company | bold }}
-{%- endif %}} }
-{ {\color{textmedium}\footnotesize {{ job.location | bold }}} }
-{ {\color{textmedium}\footnotesize {{ job.startDate | replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }}} }
+{%- endif %}{% if job.client %} ({{ job.client }}){% endif %}} }
+{ {\color{textmedium}\footnotesize {% if job.location %}{{ job.location | bold }}{% endif %}} }
+{ {\color{textmedium}\footnotesize {% if job.startDate and job.endDate %}{{ job.startDate | replace('-', '/') }} -- {{ job.endDate if job.endDate != 'Present' else 'Present' }}{% endif %}} }
 {
 \begin{cvitems}
 {%- for bullet in job.highlights %}
@@ -215,58 +214,22 @@
 {%- endfor %}
 \end{cventries}
 
-{%- if projects %}
-% Key Projects - O3 Enhanced colors with conservative sizing
-\vspace{0.4mm}
-{\color{accent}\rule{\linewidth}{2pt}}
-{\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Key Projects}
-\vspace{0.4mm}
 
-\begin{cventries}
-{%- for project in projects %}
-\cventry
-{ {\color{accentlight}\small {{ project.name | bold }}} }
-{ }
-{ }
-{ }
-{
-\begin{cvitems}
-\item {\color{textdark}\footnotesize {{ project.description | bold_and_links | replace('\n', ' ') | trim }}}
-\end{cvitems}
-}
-{%- endfor %}
-\end{cventries}
-{%- endif %}
-
-% Education - Optimized structure for single page + ATS parsing
+% Education - Ultra compact format
 \vspace{0.4mm}
 {\color{accent}\rule{\linewidth}{2pt}}
 {\fontsize{11pt}{1.1em}\bodyfont\bfseries\color{accent} \hspace{4pt} Education}
 \vspace{0.4mm}
 
-\begin{cventries}
+\begin{itemize}[leftmargin=0.6em, nosep, itemsep=0.1mm]
 {%- for edu in education %}
-\cventry
-{ {\color{textdark}\small {{ edu.studyType | bold }}} }
-{ {\color{elegantblack}\small {% if edu.institution == "INP ENSEEIHT" -%}
+\item {\color{textdark}\footnotesize {% if edu.institution == "INP ENSEEIHT" -%}
 {{ edu.institution | bold }}~\logoenseeiht
 {%- else -%}
 {{ edu.institution | bold }}
-{%- endif %}} }
-{ {\color{textmedium}\footnotesize {{ edu.location | bold }}} }
-{ {\color{textmedium}\footnotesize {{ edu.startDate | replace('-', '/') }} -- {{ edu.endDate | replace('-', '/') }}} }
-{
-{%- if edu.area %}
-\begin{cvitems}
-\item {\color{textdark}\footnotesize Specialization: {{ edu.area | bold }}}
-{%- if edu.notes %}
-\item {\color{accentlight}\footnotesize {{ edu.notes | bold }}}
-{%- endif %}
-\end{cvitems}
-{%- endif %}
-}
+{%- endif %} — {{ edu.studyType | bold }}{% if edu.area %} ({{ edu.area | bold }}){% endif %} — {{ edu.startDate | replace('-', '/') }}/{{ edu.endDate | replace('-', '/') }}{% if edu.notes %} — {{ edu.notes | bold }}{% endif %}}
 {%- endfor %}
-\end{cventries}
+\end{itemize}
 
 \end{minipage}
 

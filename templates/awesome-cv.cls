@@ -306,17 +306,19 @@
 
 \newcommand*{\cventry}[5]{%
   \vspace{-1.0mm}
-  \setlength\tabcolsep{0pt}
+  \setlength\tabcolsep{1ex}
   \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 5.0cm} R{5.0cm}}
-    \ifempty{#2#3}
-      {\entrypositionstyle{#1} & \entrydatestyle{#4} \\}
-      {\entrytitlestyle{#2} & \entrylocationstyle{#3} \\
-      \entrypositionstyle{#1} & \entrydatestyle{#4} \\}
+  \renewcommand{\arraystretch}{0.9}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{0.35\textwidth} C{0.25\textwidth} R{0.35\textwidth}}
+    \entrypositionstyle{#1} & \entrytitlestyle{#2} & \entrydatestyle{#4} \\[-1mm]
+    \ifstrempty{#3}
+      {}
+      {\multicolumn{3}{L{\textwidth}}{\entrylocationstyle{#3}} \\[-1mm]}
     \ifstrempty{#5}
       {}
-      {\multicolumn{2}{L{\textwidth}}{\descriptionstyle{#5}} \\}
+      {\multicolumn{3}{L{\textwidth}}{\descriptionstyle{#5}} \\}
   \end{tabular*}%
+  \renewcommand{\arraystretch}{1.0}
 }
 
 % Skills environment optimized for ATS parsing

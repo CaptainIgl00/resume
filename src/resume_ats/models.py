@@ -42,6 +42,8 @@ class WorkExperience(BaseModel):
     endDate: Optional[str] = None
     highlights: List[str] = []
     summary: Optional[str] = None
+    logo: Optional[str] = None
+    logo_size: Optional[str] = None
 
 
 class Education(BaseModel):

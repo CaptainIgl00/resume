@@ -1,5 +1,5 @@
 basics:
-  name: "Mathéo Guilloux"
+  name: "Mathéo Champagne"
   label: "DevOps Engineer"
   email: "matheo.guilloux@gmail.com"
   phone: "+33 6 XX XX XX XX"
@@ -7,40 +7,67 @@ basics:
     city: "Toulouse, FR"
     countryCode: "FR"
   summary: |
-    with **3 years' experience** helping companies automate and deploy cloud infrastructure. Available from **23 July** — see https://matheo.guilloux.ovh.
+    with **3 years' experience** helping companies automate and deploy cloud infrastructure. Currently on a mission at Marlink— see https://champagnedevops.fr.
   profiles:
     - network: "GitHub"
       username: "CaptainIgl00"
       url: "https://github.com/CaptainIgl00"
     - network: "LinkedIn"
       username: "matheo-guilloux"
-      url: "https://www.linkedin.com/in/matheo-guilloux/"
+      url: "https://www.linkedin.com/in/matheo-champagne"
 
 work:
+  - company: "Marlink"
+    logo: "marlink.png"
+    logo_size: "1.8em"
+    position: "DevOps Engineer"
+    location: "Toulouse, France"
+    startDate: "Aug 2025"
+    endDate: "Present"
+    highlights:
+      - "Leading **integration and deployment** of the **BridgeLink** IoT maritime platform — a **multi-service system** connecting **300+ vessels**"
+      - "Re-architected **CI/CD pipelines** (GitLab → ArgoCD) for **React**, **Laravel**, and **FastAPI** components with **Trivy scans**, **SBOMs**, and **Playwright smoke tests**"
+
   - company: "Airbus Defence and Space"
+    logo: "ads.png"
+    logo_size: "2.3em"
     client: "Neverhack"
     position: "DevOps Engineer"
     location: "Toulouse, France"
     startDate: "Nov 2023"
-    endDate: "Present"
+    endDate: "Aug 2025"
     highlights:
       - "**First Airbus DS project** to deploy **LLMs in production** (**Ollama + RTX 5090 + Langchain**), achieving **80% reduction** in manual tasks across satellite ground systems"
       - "Architected **microservices platforms** for **satellite RF testing** (**Vue.js + FastAPI + Golang**), reducing test execution time from **30 minutes to 2 clicks**"
       - "Led **DevOps transformation** on **4 critical space projects** (**POLEOS**, **Freehopper**, **Astrocast**, **Madiran**) serving satellite communications and IoT systems"
       - "Deployed **24/7 automated testing** infrastructure with **Docker/Kubernetes** for **optical laser comms** and **beam hopping** space technologies"
-      - "Modernized **legacy Matlab/C++** codebases to **Python microservices**, enabling real-time monitoring with **Grafana** dashboards"
 
   - company: "Freelance"
+    logo: "argocd.png"
+    logo_size: "2.5em"
     position: "DevSecOps Engineer"
     location: "Remote, France"
     startDate: "Jan 2025"
     endDate: "Present"
     highlights:
       - "Built https://brasseriechezju.com from scratch → **2h delivery time** via **GitHub Actions**, achieving **98% Lighthouse score** (**Nuxt.js + TypeScript + Vue.js**)"
-      - "Architected **FastAPI + SQLAlchemy** backend with **PostgreSQL** → **<200ms API response** time, deployed on **OVH VPS** with **automated SSL renewal**"
+      - "Architected and deployed a **FastAPI + SQLAlchemy** backend with **PostgreSQL**, **Minio** and **Directus** CMS on an on-premise k3s cluster"
+      - "Deployed **multi-environment infrastructure** (**dev/staging/prod**) using **Helm charts** with **GitOps workflow** → **zero-downtime deployments** via **ArgoCD**"
+
+  - company: "Production Homelab Infrastructure"
+    logo: "kubernetes.png"
+    logo_size: "2.5em"
+    position: "System Administrator"
+    startDate: ""
+    endDate: ""
+    highlights:
+      - "**Self-hosted production environment** with **99.9% uptime** over 24 months, featuring **20+ containerized services** on **k3s cluster** with **ArgoCD GitOps**"
+      - "Deployed **IoT energy monitoring** with **ESP32 + PZEM sensors** and **Home Assistant** integration → **real-time consumption tracking** and **open-source contributions**"
 
   - company: "Continental"
-    position: "Apprentice – Test Bench Developer"
+    logo: "continental.png"
+    logo_size: "1.8em"
+    position: "Apprentice"
     location: "Toulouse, France"
     startDate: "Jun 2022"
     endDate: "Sep 2023"
@@ -52,42 +79,35 @@ education:
   - institution: "INP ENSEEIHT"
     area: "Telecommunications"
     studyType: "Engineering Degree"
-    startDate: "Sep 2020"
-    endDate: "Sep 2023"
+    startDate: "2020"
+    endDate: "2023"
     location: "Toulouse, France"
   - institution: "Lycée François Arago"
     area: "Preparatory Classes for Engineering Schools (PSI)"
     studyType: "CPGE"
-    startDate: "Sep 2018"
-    endDate: "Jun 2020"
+    startDate: "2018"
+    endDate: "2020"
     location: "Perpignan, France"
     notes: "**Class Valedictorian**"
 
-projects:
-  - name: "**Browser Bot**"
-    description: |
-      **LangChain + GPT-4** autonomous web agent with real-time monitoring. Built **Docker** architecture with **noVNC** interface for observability.
-  - name: "**Production Homelab & IoT Infrastructure**"
-    description: |
-      **Self-hosted production environment** with **99.9% uptime** over 12 months, featuring **10+ containerized services**, **real-time energy monitoring** (**ESP32 + PZEM**), and **open-source contributions** to **Home Assistant** ecosystem.
 
 skills:
   - name: "Cloud & IaC"
-    keywords: ["Terraform", "Ansible", "OVH", "AWS (basic)", "GCP (basic)", "Azure (basic)"]
+    keywords: ["Terraform", "Ansible", "OVH"]
   - name: "CI/CD & Orchestration"
-    keywords: ["GitLab CI", "GitHub Actions", "Kubernetes", "Docker", "Podman", "Helm"]
+    keywords: ["GitLab CI", "GitHub Actions", "Kubernetes", "Docker", "Helm"]
   - name: "Programming"
     keywords: ["Python", "Go", "Java", "TypeScript", "C++", "Rust"]
   - name: "Monitoring"
     keywords: ["Grafana", "Prometheus", "ELK"]
   - name: "Databases"
-    keywords: ["PostgreSQL", "Elasticsearch", "MongoDB", "Redis", "InfluxDB"]
+    keywords: ["PostgreSQL", "MongoDB", "Redis", "InfluxDB"]
   - name: "Hypervisor"
     keywords: ["Nutanix", "VirtualBox", "QEMU"]
   - name: "AI"
-    keywords: ["LangChain", "Gemini 2.5 pro", "GPT-o3", "Claude Sonnet 4", "Cursor"]
+    keywords: ["LangChain", "Gemini 2.5 pro", "GPT-o3", "Claude Sonnet 4.5", "Cursor"]
   - name: "Methodology"
-    keywords: ["Agile", "Scrum", "Jira", "Confluence", "V-Model"]
+    keywords: ["Agile", "Scrum", "Jira", "Confluence"]
 
 languages:
   - language: "French"
@@ -100,9 +120,11 @@ languages:
     fluency: "Basic"
 
 references:
-  - name: "Michael Crosnier"
-    reference: "michael.crosnier@airbus.com"
-  - name: "David Kolle"
-    reference: "david.kolle@airbus.com"
-  - name: "Stéphane Billy"
-    reference: "stephane.billy@continental.com"
+  - name: "Pierre Porché - Marlink"
+    reference: "OT Products Project Manager"
+  - name: "Kevin Thomas - Airbus DS"
+    reference: "Senior Cloud Architect"
+  - name: "David Kolle - Airbus DS"
+    reference: "Ground System Integration Manager"
+  - name: "Stéphane Billy - Continental"
+    reference: "IoT & RF communication Expert"
