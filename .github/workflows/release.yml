@@ -46,11 +46,11 @@ jobs:
         
     - name: 🤖 Validate ATS compatibility
       run: |
-        python -m resume_ats.cli validate resume.yml build/Mathéo_Guilloux_CV.pdf
+        python -m resume_ats.cli validate resume.yml build/Mathéo_Champagne_CV.pdf
         
     - name: 📊 Generate ATS report
       run: |
-        python -m resume_ats.cli extract build/Mathéo_Guilloux_CV.pdf --format json > build/ats-report.json
+        python -m resume_ats.cli extract build/Mathéo_Champagne_CV.pdf --format json > build/ats-report.json
         
     - name: 📝 Create release notes
       run: |
@@ -87,7 +87,7 @@ jobs:
     - name: 📦 Prepare release assets
       run: |
         mkdir -p release-assets
-        cp build/Mathéo_Guilloux_CV.pdf "release-assets/Mathéo_Guilloux_CV_${{ steps.get_version.outputs.VERSION }}.pdf"
+        cp build/Mathéo_Champagne_CV.pdf "release-assets/Mathéo_Champagne_CV_${{ steps.get_version.outputs.VERSION }}.pdf"
         cp build/index.html "release-assets/resume_${{ steps.get_version.outputs.VERSION }}.html"
         cp build/resume.json "release-assets/resume_${{ steps.get_version.outputs.VERSION }}.json"
         cp build/ats-report.json "release-assets/ats-report_${{ steps.get_version.outputs.VERSION }}.json"
@@ -105,7 +105,7 @@ jobs:
         draft: false
         prerelease: false
         files: |
-          release-assets/Mathéo_Guilloux_CV_${{ steps.get_version.outputs.VERSION }}.pdf
+          release-assets/Mathéo_Champagne_CV_${{ steps.get_version.outputs.VERSION }}.pdf
           release-assets/resume_${{ steps.get_version.outputs.VERSION }}.html
           release-assets/resume_${{ steps.get_version.outputs.VERSION }}.json
           release-assets/ats-report_${{ steps.get_version.outputs.VERSION }}.json

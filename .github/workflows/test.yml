@@ -88,7 +88,7 @@ jobs:
     - name: 🧪 Test PDF extraction
       if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
       run: |
-        python -m resume_ats.cli extract build/Mathéo_Guilloux_CV.pdf --format table
+        python -m resume_ats.cli extract build/Mathéo_Champagne_CV.pdf --format table
         
   quality:
     runs-on: ubuntu-latest

@@ -60,11 +60,11 @@ test-ats: ## Run ATS compatibility tests only
 
 validate: ## Validate generated PDF against YAML
 	@echo "$(CYAN)✅ Validating ATS compatibility...$(NC)"
-	$(PYTHON) -m resume_ats.cli validate resume.yml build/Mathéo_Guilloux_CV.pdf
+	$(PYTHON) -m resume_ats.cli validate resume.yml build/Mathéo_Champagne_CV.pdf
 
 extract: ## Extract data from generated PDF
 	@echo "$(CYAN)📊 Extracting PDF data...$(NC)"
-	$(PYTHON) -m resume_ats.cli extract build/Mathéo_Guilloux_CV.pdf
+	$(PYTHON) -m resume_ats.cli extract build/Mathéo_Champagne_CV.pdf
 
 # Development tools
 lint: ## Run linting (ruff)
