@@ -10,7 +10,7 @@ readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.9"
 authors = [
-    {name = "Mathéo Guilloux", email = "matheo.guilloux@gmail.com"},
+    {name = "Mathéo Champagne", email = "matheo.guilloux@gmail.com"},
 ]
 keywords = ["resume", "cv", "ats", "latex", "pdf"]
 classifiers = [

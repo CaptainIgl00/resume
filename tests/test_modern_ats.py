@@ -85,7 +85,7 @@ class TestATSCompatibility:
     @pytest.fixture
     def cv_extractor(self) -> CVExtractor:
         """Create extractor for the generated PDF."""
-        pdf_path = Path(__file__).parent.parent / "build" / "Mathéo_Guilloux_CV.pdf"
+        pdf_path = Path(__file__).parent.parent / "build" / "Mathéo_Champagne_CV.pdf"
         if not pdf_path.exists():
             pytest.skip(f"PDF not found: {pdf_path}")
 
@@ -93,7 +93,7 @@ class TestATSCompatibility:
 
     def test_pdf_exists(self):
         """Verify the PDF exists."""
-        pdf_path = Path(__file__).parent.parent / "build" / "Mathéo_Guilloux_CV.pdf"
+        pdf_path = Path(__file__).parent.parent / "build" / "Mathéo_Champagne_CV.pdf"
         assert pdf_path.exists(), f"PDF not found: {pdf_path}"
 
     def test_text_extraction(self, cv_extractor: CVExtractor):

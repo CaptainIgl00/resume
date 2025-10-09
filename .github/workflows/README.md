@@ -34,7 +34,7 @@ Ce dossier contient les workflows CI/CD pour automatiser la validation ATS et la
 - ✅ Upload de tous les fichiers versionnés
 
 **Fichiers publiés** :
-- `Mathéo_Guilloux_CV_v1.0.0.pdf`
+- `Mathéo_Champagne_CV_v1.0.0.pdf`
 - `resume_v1.0.0.html`
 - `resume_v1.0.0.json`
 - `ats-report_v1.0.0.json`

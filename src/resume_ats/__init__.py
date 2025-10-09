@@ -5,8 +5,8 @@ from YAML configuration files with automated validation.
 """
 
 __version__ = "0.1.0"
-__author__ = "Mathéo Guilloux"
-__email__ = "matheo.guilloux@gmail.com"
+__author__ = "Mathéo Champagne"
+__email__ = "matheo.champagne@gmail.com"
 
 from .core import ResumeBuilder
 from .extractors import CVExtractor
